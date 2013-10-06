@@ -2,10 +2,63 @@
 
 class git extends app 
 {
+	private $path;
+	
+	protected function init($vars)
+	{
+		if(isset($_POST['newgitpath'])) $_SESSION['git_path'] = $_POST['newgitpath'];
+		else if(!isset($_SESSION['git_path'])) $_SESSION['git_path'] = ROOT.'..';
+		
+		$this->path = $_SESSION['git_path'];
+		
+		chdir($this->path);
+	}
+	
 	public function main($vars)
 	{
-		$cwd = getcwd();
-		chdir(ROOT.'..');
+		echo '<div>Path: <form action="%appurl%" method="post"><select name="newgitpath" />';
+		if(is_dir(ROOT.'../.git')) echo '<optgroup label="System"><option value="'.ROOT.'..">LittlefootCMS</option></optgroup>';
+		
+		echo '<optgroup label="Apps">';
+		foreach(scandir(ROOT.'apps') as $app)
+		{
+			if($app[0] == '.') continue;
+			if(is_dir(ROOT.'apps/'.$app.'/.git'))
+			{
+				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
+					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.'</option>';
+				else
+					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
+			}
+		}
+		echo '</optgroup>';
+		
+		echo '<optgroup label="Skins">';
+		foreach(scandir(ROOT.'skins') as $skin)
+		{
+			if($skin[0] == '.') continue;
+			
+			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
+				echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
+				
+			
+			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
+			{
+				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
+					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
+				else
+				echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
+			}
+		}
+		echo '</optgroup>';
+		
+		echo '</select><input type="submit" /></form></div>';
+		
+		
+		
+		
+		
+		
 		
 		
 		// Get current branch
@@ -48,34 +101,22 @@ class git extends app
 			}
 		}
 		echo '</ul>';
-		
-		//echo nl2br(print_r($match, true));
-	
-		//echo nl2br($current);
-		
-		chdir($cwd);
 	}
 	
 	public function rm($vars)
 	{
 		if($vars[1] == 'master') return 'nope';
 		
-		$cwd = getcwd();
-		chdir(ROOT.'..');
 		
 		echo nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1'));
-		chdir($cwd);
 		
 		$this->main($vars);
 	}
 	
 	public function push($vars)
 	{
-		$cwd = getcwd();
-		chdir(ROOT.'..');
 		
-		echo nl2br(shell_exec('/usr/bin/git push -u lf master 2>&1'));
-		chdir($cwd);
+		echo nl2br(shell_exec('/usr/bin/git push -u origin master 2>&1'));
 		
 		$this->main($vars);
 	}
@@ -83,11 +124,7 @@ class git extends app
 	public function merge($vars)
 	{
 		
-		$cwd = getcwd();
-		chdir(ROOT.'..');
-		
 		echo nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'));
-		chdir($cwd);
 		
 		
 		$this->main($vars);
@@ -95,36 +132,24 @@ class git extends app
 	
 	public function create($vars)
 	{
-		$cwd = getcwd();
-		chdir(ROOT.'..');
 		
 		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'"');
 		
-		chdir($cwd);
 		
 		$this->main($vars);
 	}
 	
 	public function checkout($vars)
 	{
-		$cwd = getcwd();
-		chdir(ROOT.'..');
-		
 		echo nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1'));
-		
-		chdir($cwd);
 		
 		$this->main($vars);
 	}
 	public function commit($vars)
 	{
-		$cwd = getcwd();
-		chdir(ROOT.'..');
 		
 		$out = shell_exec('/usr/bin/git commit -a -m "'.$_POST['commit_text'].'"');
 		echo nl2br($out);
-		
-		chdir($cwd);
 		
 		
 		$this->main($vars);
