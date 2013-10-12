@@ -135,9 +135,9 @@ class git extends app
 	
 	public function merge($vars)
 	{
-		
-		echo nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'));
-		
+		echo '<span class="git_msg">';
+		echo substr(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
@@ -153,7 +153,9 @@ class git extends app
 	
 	public function checkout($vars)
 	{
-		echo nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1'));
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1')), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
