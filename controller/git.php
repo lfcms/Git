@@ -74,7 +74,7 @@ class git extends app
 			? '<a href="%appurl%push">Push</a>' 
 			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
 		
-		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>';
+		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
@@ -87,17 +87,20 @@ class git extends app
 		
 		foreach($branches as $branch)
 		{
+			$pull = '';
 			$parts = explode('/', $branch);
+			if($parts[2] != 'master') $pull = ' [<a href="%appurl%pullrequest/'.$parts[2].'">Submit Pull Request</a>] ';
+			
 			if($parts[2] == $current)
 			{
-				echo '<li><form action="%appurl%commit" method="post">Active '.$branch.' <input type="text" name="commit_text" placeholder="Optional commit text"/> <input type="submit" value="Commit" /></form> </li>';
+				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Optional commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
 			}
 			else
 			{
 				$delete = '';
 				if($parts[2] != 'master')
 					$delete = ' [<a href="%appurl%rm/'.$parts[2].'">Delete</a>]';
-				echo '<li><a href="%appurl%checkout/'.$parts[2].'">Checkout</a> '.$branch.$delete.'</li>';
+				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span></li>';
 			}
 		}
 		echo '</ul>';
@@ -148,7 +151,8 @@ class git extends app
 	public function commit($vars)
 	{
 		
-		$out = shell_exec('/usr/bin/git commit -a -m "'.$_POST['commit_text'].'"');
+		
+		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'"');
 		echo nl2br($out);
 		
 		
