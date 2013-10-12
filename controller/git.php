@@ -59,7 +59,14 @@ class git extends app
 		echo '<style type="text/css">
 			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
 			#app-apps ul li { margin-top: 10px; }
-			#app-apps h3 { margin-top: 20px; } 
+			#app-apps h3 { margin-top: 20px; }
+			#app-apps .git_msg {   background: #AAAADD;
+				border: medium solid #0000FF;
+				color: #3333CC;
+				display: block;
+				font-weight: bold;
+				margin: 10px 0;
+				padding: 10px; }
 		</style>';
 		
 		
@@ -76,7 +83,6 @@ class git extends app
 			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
 		
 		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
-		
 		echo nl2br($status);
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
@@ -151,10 +157,15 @@ class git extends app
 		
 		$this->main($vars);
 	}
+	
 	public function commit($vars)
 	{
 		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
-		echo nl2br($out);
+		$out = substr($out, 0, -1);
+		
+		echo '<span class="git_msg">';
+			echo nl2br($out);
+		echo '</span>';
 		
 		
 		$this->main($vars);
