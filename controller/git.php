@@ -16,7 +16,7 @@ class git extends app
 	
 	public function main($vars)
 	{
-		echo '<div>Path: <form action="%appurl%" method="post"><select name="newgitpath" />';
+		echo '<div><form action="%appurl%" method="post">Repo: <select name="newgitpath" />';
 		if(is_dir(ROOT.'../.git')) echo '<optgroup label="System"><option value="'.ROOT.'..">LittlefootCMS</option></optgroup>';
 		
 		echo '<optgroup label="Apps">';
@@ -52,22 +52,30 @@ class git extends app
 		}
 		echo '</optgroup>';
 		
-		echo '</select><input type="submit" /></form></div>';
+		echo '</select><input type="submit" value="Change Repo" /></form></div>';
 		
 		
 		
-		
+		echo '<style type="text/css">
+			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+			#app-apps ul li { margin-top: 10px; }
+			#app-apps h3 { margin-top: 20px; }
+			#app-apps .git_msg {   background: #AAAADD;
+				border: medium solid #0000FF;
+				color: #3333CC;
+				display: block;
+				font-weight: bold;
+				margin: 10px 0;
+				padding: 10px; }
+		</style>';
 		
 		
 		
 		
 		// Get current branch
-		$current = shell_exec('/usr/bin/git status');
+		$status = shell_exec('/usr/bin/git status');
 		
-		if($vars[0] == '')
-			echo nl2br($current);
-		
-		preg_match("/# On branch ([^\n]+)/", $current, $match);
+		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
 		$update = $current == 'master' 
@@ -75,6 +83,7 @@ class git extends app
 			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
 		
 		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
+		echo nl2br($status);
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
@@ -93,7 +102,7 @@ class git extends app
 			
 			if($parts[2] == $current)
 			{
-				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Optional commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
+				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
 			}
 			else
 			{
@@ -126,9 +135,9 @@ class git extends app
 	
 	public function merge($vars)
 	{
-		
-		echo nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'));
-		
+		echo '<span class="git_msg">';
+		echo substr(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
@@ -136,7 +145,7 @@ class git extends app
 	public function create($vars)
 	{
 		
-		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'"');
+		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1');
 		
 		
 		$this->main($vars);
@@ -144,16 +153,21 @@ class git extends app
 	
 	public function checkout($vars)
 	{
-		echo nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1'));
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1')), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
+	
 	public function commit($vars)
 	{
+		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
+		$out = substr($out, 0, -1);
 		
-		
-		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'"');
-		echo nl2br($out);
+		echo '<span class="git_msg">';
+			echo nl2br($out);
+		echo '</span>';
 		
 		
 		$this->main($vars);
