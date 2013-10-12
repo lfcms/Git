@@ -56,7 +56,11 @@ class git extends app
 		
 		
 		
-		
+		echo '<style type="text/css">
+			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+			#app-apps ul li { margin-top: 10px; }
+			#app-apps h3 { margin-top: 20px; } 
+		</style>';
 		
 		
 		
@@ -150,7 +154,8 @@ class git extends app
 	}
 	public function commit($vars)
 	{
-		
+		echo '/usr/bin/git commit -am "'.$_POST['commit_text'].'"';
+		return;
 		
 		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'"');
 		echo nl2br($out);
