@@ -57,6 +57,7 @@ class git extends app
 		
 		
 		echo '<style type="text/css">
+			#app-apps fieldset { margin-top: 10px; }
 			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
 			#app-apps ul li { margin-top: 10px; }
 			#app-apps h3 { margin-top: 20px; }
@@ -68,9 +69,6 @@ class git extends app
 				margin: 10px 0;
 				padding: 10px; }
 		</style>';
-		
-		
-		
 		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
@@ -84,6 +82,8 @@ class git extends app
 		
 		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
 		echo nl2br($status);
+		
+		echo '<fieldset><h4>Dev Toolkit</h4>';
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
@@ -113,6 +113,7 @@ class git extends app
 			}
 		}
 		echo '</ul>';
+		echo '</fieldset>';
 	}
 	
 	public function rm($vars)
@@ -120,7 +121,9 @@ class git extends app
 		if($vars[1] == 'master') return 'nope';
 		
 		
-		echo nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1'));
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
@@ -128,7 +131,9 @@ class git extends app
 	public function push($vars)
 	{
 		
-		echo nl2br(shell_exec('/usr/bin/git push -u origin master 2>&1'));
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git push -u origin master 2>&1')), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
@@ -136,7 +141,7 @@ class git extends app
 	public function merge($vars)
 	{
 		echo '<span class="git_msg">';
-		echo substr(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1'), 0, -1);
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.$vars[1].' 2>&1')), 0, -1);
 		echo '</span>';
 		
 		$this->main($vars);
@@ -144,9 +149,9 @@ class git extends app
 	
 	public function create($vars)
 	{
-		
-		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1');
-		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
+		echo '</span>';
 		
 		$this->main($vars);
 	}
@@ -166,7 +171,7 @@ class git extends app
 		$out = substr($out, 0, -1);
 		
 		echo '<span class="git_msg">';
-			echo nl2br($out);
+		echo nl2br($out);
 		echo '</span>';
 		
 		
