@@ -16,7 +16,7 @@ class git extends app
 	
 	public function main($vars)
 	{
-		echo '<div>Path: <form action="%appurl%" method="post"><select name="newgitpath" />';
+		echo '<div><form action="%appurl%" method="post">Repo: <select name="newgitpath" />';
 		if(is_dir(ROOT.'../.git')) echo '<optgroup label="System"><option value="'.ROOT.'..">LittlefootCMS</option></optgroup>';
 		
 		echo '<optgroup label="Apps">';
@@ -52,7 +52,7 @@ class git extends app
 		}
 		echo '</optgroup>';
 		
-		echo '</select><input type="submit" /></form></div>';
+		echo '</select><input type="submit" value="Change Repo" /></form></div>';
 		
 		
 		
@@ -66,12 +66,9 @@ class git extends app
 		
 		
 		// Get current branch
-		$current = shell_exec('/usr/bin/git status');
+		$status = shell_exec('/usr/bin/git status');
 		
-		if($vars[0] == '')
-			echo nl2br($current);
-		
-		preg_match("/# On branch ([^\n]+)/", $current, $match);
+		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
 		$update = $current == 'master' 
@@ -79,6 +76,8 @@ class git extends app
 			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
 		
 		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
+		
+		echo nl2br($status);
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
@@ -97,7 +96,7 @@ class git extends app
 			
 			if($parts[2] == $current)
 			{
-				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Optional commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
+				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
 			}
 			else
 			{
