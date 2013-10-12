@@ -140,7 +140,7 @@ class git extends app
 	public function create($vars)
 	{
 		
-		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'"');
+		shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1');
 		
 		
 		$this->main($vars);
@@ -154,10 +154,7 @@ class git extends app
 	}
 	public function commit($vars)
 	{
-		echo '/usr/bin/git commit -am "'.$_POST['commit_text'].'"';
-		return;
-		
-		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'"');
+		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
 		echo nl2br($out);
 		
 		
