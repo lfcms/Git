@@ -61,6 +61,7 @@ class git extends app
 			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
 			#app-apps ul li { margin-top: 10px; }
 			#app-apps h3 { margin-top: 20px; }
+			#app-apps h4 { margin-top: 10px; }
 			#app-apps .git_msg {   background: #AAAADD;
 				border: medium solid #0000FF;
 				color: #3333CC;
@@ -83,16 +84,15 @@ class git extends app
 		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
 		echo nl2br($status);
 		
-		echo '<fieldset><h4>Dev Toolkit</h4>';
+		echo '<fieldset>';
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
 		$branches = explode("\n", $branches, -1);
-		echo '<ul>
-			<li>
-				<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
-			</li>
-		';
+		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>';
+		
+		echo '<h4>Availabled Brances</h4>
+			<ul>'; 
 		
 		foreach($branches as $branch)
 		{
