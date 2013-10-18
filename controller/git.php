@@ -91,7 +91,7 @@ class git extends app
 		$branches = explode("\n", $branches, -1);
 		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>';
 		
-		echo '<h4>Availabled Brances</h4>
+		echo '<h4>Available Branches</h4>
 			<ul>'; 
 		
 		foreach($branches as $branch)
