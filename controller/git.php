@@ -155,7 +155,7 @@ class git extends app
 		
 		$this->main($vars);
 	}
-	
+	 
 	public function checkout($vars)
 	{
 		echo '<span class="git_msg">';
@@ -179,7 +179,7 @@ class git extends app
 	
 	public function pullrequest($vars)
 	{ 
-		$out = shell_exec('/usr/bin/git diff --name-only -- master "'.escapeshellarg($vars[1]).'" 2>&1'); 
+		$out = shell_exec('/usr/bin/git diff --name-only master "'.escapeshellarg($vars[1]).'" 2>&1'); 
 		echo substr($out, 0, -1).'';
 		
 		
@@ -193,7 +193,7 @@ class git extends app
 		
 		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request', 'Pull request submitted: dev@'.$_SERVER['SERVER_NAME'].'
 		
-'.$out, 'dev@'.$_SERVER['SERVER_NAME']);
+'.$out, 'From: dev@'.$_SERVER['SERVER_NAME']);
 
 
 		$this->main($vars);
