@@ -191,7 +191,9 @@ class git extends app
 		if(preg_match('/\d+/', $vars[1], $match))
 			$ticket = $match[0];
 		
-		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request', 'Pull request submitted: dev@'.$_SERVER['SERVER_NAME'].'
+		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by dev@'.$_SERVER['SERVER_NAME'].'
+
+For branch: '.$vars[1].'
 		
 '.$out, 'From: dev@'.$_SERVER['SERVER_NAME']);
 
