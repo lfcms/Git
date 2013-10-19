@@ -179,7 +179,7 @@ class git extends app
 	
 	public function pullrequest($vars)
 	{ 
-		$out = shell_exec('/usr/bin/git diff --name-only master "'.escapeshellarg($vars[1]).'" 2>&1'); 
+		$out = shell_exec('/usr/bin/git diff --name-only master -- "'.escapeshellarg($vars[1]).'" 2>&1'); 
 		echo substr($out, 0, -1).'';
 		
 		
