@@ -174,7 +174,28 @@ class git extends app
 		echo nl2br($out);
 		echo '</span>';
 		
+		$this->main($vars);
+	}
+	
+	public function pullrequest($vars)
+	{ 
+		$out = shell_exec('/usr/bin/git diff --name-only -- master "'.escapeshellarg($vars[1]).'" 2>&1'); 
+		echo substr($out, 0, -1).'';
 		
+		
+		echo '<span class="git_msg">';
+		echo nl2br($out);
+		echo '</span>';
+		
+		$ticket = $vars[1];
+		if(preg_match('/\d+/', $vars[1], $match))
+			$ticket = $match[0];
+		
+		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request', 'Pull request submitted: dev@'.$_SERVER['SERVER_NAME'].'
+		
+'.$out, 'dev@'.$_SERVER['SERVER_NAME']);
+
+
 		$this->main($vars);
 	}
 }
