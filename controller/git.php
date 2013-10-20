@@ -91,14 +91,15 @@ class git extends app
 				padding: 10px; }
 		</style>';
 		
-		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
 		
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
-		$update = '(<a href="%appurl%merge/'.$current.'">Merge</a>)';
+		$update = $current == 'master' 
+			? ''//'<a href="%appurl%push">Push</a>' 
+			: '(<a href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)';
 		
 		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
 		echo nl2br($status);
