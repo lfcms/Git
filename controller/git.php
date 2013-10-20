@@ -267,8 +267,6 @@ Commits:
 		
 		echo '<span class="git_msg">';
 		
-		echo '<br />';
-		
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1')), 0, -1);
 		echo '</span>';
 		
