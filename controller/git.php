@@ -172,7 +172,6 @@ class git extends app
 	
 	public function push($vars)
 	{
-		
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git push -u origin master 2>&1')), 0, -1);
 		echo '</span>';
@@ -230,7 +229,7 @@ class git extends app
 	}
 	
 	public function pullrequest($vars)
-	{ 
+	{
 		$out = shell_exec('/usr/bin/git diff --name-only master '.escapeshellarg($vars[1]).' 2>&1'); 
 		$out = substr($out, 0, -1);
 		
