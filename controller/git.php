@@ -16,8 +16,22 @@ class git extends app
 	
 	public function main($vars)
 	{
-		echo '<div><form action="%appurl%" method="post">
-			<a href="%appurl%remotes">Manage Remotes</a><br />
+		// Get list of remotes
+		$lines = file($this->path.'/.git/config');
+		$remotes = '';
+		foreach($lines as $line)
+			if(preg_match('/^\[remote "(.+)"/', $line, $match))
+				$remotes .= '<option value="'.$match[1].'">'.$match[1].'</option>';
+		
+		echo '<div>
+			<form action="%appurl%pushpull" method="post">
+				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id="">'.$remotes.'</select>
+					/ <input type="text" name="branch" placeholder="master" />
+					<input type="submit" value="Push" /> 
+					<input type="submit" value="Pull" />
+			</form> 
+			
+		<form action="%appurl%" method="post">
 			Repo: <select name="newgitpath" />';
 			if(is_dir(ROOT.'../.git')) 
 				echo '
@@ -211,7 +225,6 @@ class git extends app
 		$out2 = shell_exec('/usr/bin/git cherry -v master 2>&1'); 
 		$out2 = substr($out2, 0, -1);
 		
-		
 		echo '<span class="git_msg">
 			Pull Request submitted<br /><br />
 			Modified files (master -> '.$vars[1].'):<br />';
@@ -224,14 +237,12 @@ class git extends app
 		
 		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by dev@'.$_SERVER['SERVER_NAME'].'
 
-For branch: '.$vars[1].'
+Branch: '.$vars[1].'
 	
-Modified files (master -> '.$vars[1].')
-
+Modified files (master -> '.$vars[1].'):
 '.$out.'
 
 Commits:
-	
 '.$out2, 'From: dev@'.$_SERVER['SERVER_NAME']);
 
 
