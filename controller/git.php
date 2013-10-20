@@ -24,14 +24,9 @@ class git extends app
 				$remotes .= '<option value="'.$match[1].'">'.$match[1].'</option>';
 		
 		echo '<div>
-			<form action="%appurl%pushpull" method="post">
-				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id="">'.$remotes.'</select>
-					/ <input type="text" name="branch" placeholder="master" />
-					<input type="submit" value="Push" /> 
-					<input type="submit" value="Pull" />
-			</form> 
 			
 		<form action="%appurl%" method="post">
+			<h3>
 			Repo: <select name="newgitpath" />';
 			if(is_dir(ROOT.'../.git')) 
 				echo '
@@ -71,9 +66,15 @@ class git extends app
 		}
 		echo '</optgroup>';
 		
-		echo '</select><input type="submit" value="Change Repo" /></form></div>';
+		echo '</select><input type="submit" value="Change Repo" /></h3></form></div>';
 		
-		
+		echo '
+			<form action="%appurl%pushpull" method="post">
+				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id="">'.$remotes.'</select>
+					/ <input type="text" name="branch" placeholder="master" />
+					<input type="submit" value="Push" /> 
+					<input type="submit" value="Pull" />
+			</form> ';
 		
 		echo '<style type="text/css">
 			#app-apps fieldset { margin-top: 10px; }
@@ -97,10 +98,10 @@ class git extends app
 		$current = $match[1];
 		
 		$update = $current == 'master' 
-			? '<a href="%appurl%push">Push</a>' 
+			? //'<a href="%appurl%push">Push</a>' 
 			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
 		
-		echo '<h3>Current branch: '.$current.' ['.$update.']</h3>'; 
+		echo '<h4>Current branch: '.$current.' ['.$update.']</h4>'; 
 		echo nl2br($status);
 		
 		echo '<fieldset>';
