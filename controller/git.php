@@ -208,7 +208,7 @@ class git extends app
 		$out = shell_exec('/usr/bin/git diff --name-only master '.escapeshellarg($vars[1]).' 2>&1'); 
 		$out = substr($out, 0, -1);
 		
-		$out2 = shell_exec('/usr/bin/git diff master '.escapeshellarg($vars[1]).' 2>&1'); 
+		$out2 = shell_exec('/usr/bin/git cherry -v master 2>&1'); 
 		$out2 = substr($out2, 0, -1);
 		
 		
