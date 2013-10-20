@@ -103,7 +103,6 @@ class git extends app
 		
 		
 		
-		echo '<fieldset>';
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
@@ -132,7 +131,6 @@ class git extends app
 			}
 		}
 		echo '</ul>';
-		echo '</fieldset>';
 		
 		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
 		echo nl2br($status);
