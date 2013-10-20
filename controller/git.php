@@ -104,14 +104,13 @@ class git extends app
 			: '(<a href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)';
 		
 		
-		
-		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 	
 		$branches = explode("\n", $branches, -1);
-		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>';
 		
-		echo '<h4>Available Branches</h4>
+		
+		echo '<h4>Available Branches</h4>';
+		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
 			<ul>'; 
 		
 		foreach($branches as $branch)
@@ -254,11 +253,12 @@ Commits:
 	
 	public function pushpull($vars)
 	{
-		print_r($_POST);
-		
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
 		echo '<span class="git_msg">';
+		
+		echo '<br />';
+		
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1')), 0, -1);
 		echo '</span>';
 		
