@@ -91,6 +91,7 @@ class git extends app
 				padding: 10px; }
 		</style>';
 		
+		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
 		
