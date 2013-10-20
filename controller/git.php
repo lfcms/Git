@@ -97,11 +97,9 @@ class git extends app
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
-		$update = $current == 'master' 
-			? //'<a href="%appurl%push">Push</a>' 
-			: '<a href="%appurl%merge/'.$current.'">Merge</a>';
+		$update = '(<a href="%appurl%merge/'.$current.'">Merge</a>)';
 		
-		echo '<h4>Current branch: '.$current.' ['.$update.']</h4>'; 
+		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
 		echo nl2br($status);
 		
 		echo '<fieldset>';
@@ -116,7 +114,7 @@ class git extends app
 		
 		foreach($branches as $branch)
 		{
-			$pull = '';
+			$pull = ''; 
 			$parts = explode('/', $branch);
 			if($parts[2] != 'master') $pull = ' [<a href="%appurl%pullrequest/'.$parts[2].'">Submit Pull Request</a>] ';
 			
