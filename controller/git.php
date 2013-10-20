@@ -16,8 +16,14 @@ class git extends app
 	
 	public function main($vars)
 	{
-		echo '<div><form action="%appurl%" method="post">Repo: <select name="newgitpath" />';
-		if(is_dir(ROOT.'../.git')) echo '<optgroup label="System"><option value="'.ROOT.'..">LittlefootCMS</option></optgroup>';
+		echo '<div><form action="%appurl%" method="post">
+			<a href="%appurl%remotes">Manage Remotes</a><br />
+			Repo: <select name="newgitpath" />';
+			if(is_dir(ROOT.'../.git')) 
+				echo '
+					<optgroup label="System">
+						<option value="'.ROOT.'..">LittlefootCMS</option>
+					</optgroup>';
 		
 		echo '<optgroup label="Apps">';
 		foreach(scandir(ROOT.'apps') as $app)
@@ -31,9 +37,8 @@ class git extends app
 					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
 			}
 		}
-		echo '</optgroup>';
-		
-		echo '<optgroup label="Skins">';
+		echo '</optgroup>
+				<optgroup label="Skins">';
 		foreach(scandir(ROOT.'skins') as $skin)
 		{
 			if($skin[0] == '.') continue;
@@ -114,6 +119,18 @@ class git extends app
 		}
 		echo '</ul>';
 		echo '</fieldset>';
+	}
+	
+	public function remotes($vars)
+	{
+		if($vars[1] == 'master') return 'nope';
+		
+		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git remote 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
 	}
 	
 	public function rm($vars)
