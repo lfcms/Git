@@ -101,8 +101,7 @@ class git extends app
 			? ''//'<a href="%appurl%push">Push</a>' 
 			: '(<a href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)';
 		
-		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
-		echo nl2br($status);
+		
 		
 		echo '<fieldset>';
 		
@@ -134,6 +133,9 @@ class git extends app
 		}
 		echo '</ul>';
 		echo '</fieldset>';
+		
+		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
+		echo nl2br($status);
 	}
 	
 	public function remotes($vars)
@@ -203,7 +205,7 @@ class git extends app
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1')), 0, -1);
 		echo '</span>';
 		
-		redirect302();
+		redirect302($this->lf->appurl);
 	}
 	
 	public function commit($vars)
