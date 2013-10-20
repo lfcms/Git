@@ -255,14 +255,13 @@ Commits:
 	{
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
-		/*echo '<span class="git_msg">';
+		echo '<span class="git_msg">';
 		
 		echo '<br />';
 		
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1')), 0, -1);
-		echo '</span>';*/
+		echo '</span>';
 		
-		shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1');
-		redirect302($this->lf->appurl);
+		$this->main($vars);
 	}
 }
