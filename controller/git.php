@@ -258,6 +258,7 @@ Commits:
 '.$out2, 'From: dev@'.$_SERVER['SERVER_NAME']);
 
 		$this->main($vars);
+		
 	}
 	
 	public function pushpull($vars)
