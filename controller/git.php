@@ -257,7 +257,6 @@ Modified files (master -> '.$vars[1].'):
 Commits:
 '.$out2, 'From: dev@'.$_SERVER['SERVER_NAME']);
 
-
 		$this->main($vars);
 	}
 	
