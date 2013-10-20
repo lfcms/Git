@@ -23,6 +23,8 @@ class git extends app
 			if(preg_match('/^\[remote "(.+)"/', $line, $match))
 				$remotes .= '<option value="'.$match[1].'">'.$match[1].'</option>';
 		
+		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
+		
 		echo '<div>
 			
 		<form action="%appurl%" method="post">
