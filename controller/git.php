@@ -203,7 +203,7 @@ class git extends app
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1')), 0, -1);
 		echo '</span>';
 		
-		$this->main($vars);
+		redirect302();
 	}
 	
 	public function commit($vars)
