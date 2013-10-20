@@ -74,8 +74,8 @@ class git extends app
 			<form action="%appurl%pushpull" method="post">
 				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id="">'.$remotes.'</select>
 					/ <input type="text" name="branch" placeholder="master" />
-					<input type="submit" value="Push" /> 
-					<input type="submit" value="Pull" />
+					<input type="submit" name="direction" value="push" /> 
+					<input type="submit" name="direction" value="pull" />
 			</form> ';
 		
 		echo '<style type="text/css">
@@ -250,5 +250,19 @@ Commits:
 
 
 		$this->main($vars);
+	}
+	
+	public function pushpull($vars)
+	{
+		print_r($_POST);
+		
+		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
+		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
+		
 	}
 }
