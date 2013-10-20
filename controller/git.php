@@ -224,8 +224,17 @@ class git extends app
 		
 		if(strpos($out, "*** Please tell me who you are.") !== false)
 		{			
-			shell_exec('/usr/bin/git config user.email "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
+			$conf = '
+[user]
+        name = dev
+        email = dev@'.$_SERVER['SERVER_NAME'].'
+';
+		
+			file_put_contents('.git/config', $conf, FILE_APPEND);
+			
+			/*shell_exec('/usr/bin/git config user.email "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
 			shell_exec('/usr/bin/git config user.name "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
+			*/
 			
 			$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
 			$out = substr($out, 0, -1);
