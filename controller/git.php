@@ -26,7 +26,6 @@ class git extends app
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
 		echo '<div>
-			
 		<form action="%appurl%" method="post">
 			<h3>
 			Repo: <select name="newgitpath" />';
