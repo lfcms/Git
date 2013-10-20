@@ -212,6 +212,16 @@ class git extends app
 		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
 		$out = substr($out, 0, -1);
 		
+		
+		if(strpos($out, "*** Please tell me who you are.") !== false)
+		{			
+			shell_exec('/usr/bin/git config user.email "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
+			shell_exec('/usr/bin/git config user.name "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
+			
+			$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
+			$out = substr($out, 0, -1);
+		}
+		
 		echo '<span class="git_msg">';
 		echo nl2br($out);
 		echo '</span>';
