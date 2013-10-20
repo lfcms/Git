@@ -125,9 +125,18 @@ class git extends app
 	{
 		if($vars[1] == 'master') return 'nope';
 		
+		/*$ini = preg_replace('/\s"([^"]+)"/', '$1', file_get_contents($this->path.'/.git/config'));
+		
+		$ini_array = parse_ini_string($ini);
+		
+		echo nl2br(print_r($ini_array,true));*/
 		
 		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git remote 2>&1')), 0, -1);
+		$config = "";
+		$lines = file($this->path.'/.git/config');
+		foreach($lines as $line)
+			if(preg_match('/^\[remote|url =/', $line))
+				echo $line.'<br />';
 		echo '</span>';
 		
 		$this->main($vars);
@@ -196,7 +205,7 @@ class git extends app
 	
 	public function pullrequest($vars)
 	{ 
-		$out = shell_exec('/usr/bin/git diff --name-only master -- "'.escapeshellarg($vars[1]).'" 2>&1'); 
+		$out = shell_exec('/usr/bin/git diff --name-only -- master "'.escapeshellarg($vars[1]).'" 2>&1'); 
 		echo substr($out, 0, -1).'';
 		
 		
