@@ -316,7 +316,11 @@ Commits:
 		echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
 		if($_POST['branch'] != 'master')
 			echo nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellarg($_POST['branch']).' 2>&1'));
-		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).' 2>&1')), 0, -1);
+		
+		$tags = '';
+		if($match[1] == 'push') $tags = ' --all';
+		
+		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
 		echo '</span>';
 		
 		$this->main($vars);
