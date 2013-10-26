@@ -138,7 +138,6 @@ class git extends app
 	
 	public function tag($vars)
 	{
-		print_r($_POST);
 		$rev = shell_exec('git rev-list HEAD | wc -l');
 		$rev = trim($rev);
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
@@ -148,6 +147,8 @@ class git extends app
 		
 		echo '<span class="git_msg">';
 		echo nl2br(trim(shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1')));
+		echo '<br />';
+		echo nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		echo '</span>';
 		
 		$this->main($vars);
