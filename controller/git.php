@@ -132,8 +132,23 @@ class git extends app
 		}
 		echo '</ul>';
 		
-		echo '<h4>Current branch: '.$current.' '.$update.'</h4>'; 
+		echo '<h4>Current branch: '.$current.' '.$update.' <form action="%appurl%tag" method="post">Tag: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form></h4>'; 
 		echo nl2br($status);
+	}
+	
+	public function tag($vars)
+	{
+		print_r($_POST);
+		$rev = shell_exec('git rev-list HEAD | wc -l');
+		$rev = trim($rev);
+		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
+		
+		
+		
+		
+		echo '<span class="git_msg">';
+		echo nl2br(trim(shell_exec('/usr/bin/git tag -a "'.$vars[1].'" 2>&1')));
+		echo '</span>';
 	}
 	
 	public function remotes($vars)
