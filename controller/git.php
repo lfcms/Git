@@ -147,8 +147,10 @@ class git extends app
 		
 		
 		echo '<span class="git_msg">';
-		echo nl2br(trim(shell_exec('/usr/bin/git tag -a "'.$vars[1].'" 2>&1')));
+		echo nl2br(trim(shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1')));
 		echo '</span>';
+		
+		$this->main($vars);
 	}
 	
 	public function remotes($vars)
