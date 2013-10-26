@@ -145,8 +145,11 @@ class git extends app
 		
 		
 		echo '<span class="git_msg">';
-		echo shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
-		echo 'Tagged: '.$version;
+		$out = shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
+		if(!$out)
+			echo 'Tagged: '.$version;
+		else
+			echo $out;
 		echo '<br />';
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		echo '</span>';
