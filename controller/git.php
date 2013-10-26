@@ -28,6 +28,7 @@ class git extends app
 					margin: 10px 0;
 					padding: 10px; }
 			</style>';
+			
 	}
 	
 	public function main($vars)
