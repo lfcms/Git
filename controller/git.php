@@ -12,6 +12,22 @@ class git extends app
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
+		
+		if(!count($_POST))
+			echo '<style type="text/css">
+				#app-apps fieldset { margin-top: 10px; }
+				#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+				#app-apps ul li { margin-top: 10px; }
+				#app-apps h3 { margin-top: 20px; }
+				#app-apps h4 { margin-top: 10px; }
+				#app-apps .git_msg {   background: #AAAADD;
+					border: medium solid #0000FF;
+					color: #3333CC;
+					display: block;
+					font-weight: bold;
+					margin: 10px 0;
+					padding: 10px; }
+			</style>';
 	}
 	
 	public function main($vars)
@@ -76,21 +92,6 @@ class git extends app
 					<input type="submit" name="direction" value="pull" />
 					<input type="submit" name="direction" value="push" /> 
 			</form> ';
-		
-		echo '<style type="text/css">
-			#app-apps fieldset { margin-top: 10px; }
-			#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
-			#app-apps ul li { margin-top: 10px; }
-			#app-apps h3 { margin-top: 20px; }
-			#app-apps h4 { margin-top: 10px; }
-			#app-apps .git_msg {   background: #AAAADD;
-				border: medium solid #0000FF;
-				color: #3333CC;
-				display: block;
-				font-weight: bold;
-				margin: 10px 0;
-				padding: 10px; }
-		</style>';
 		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
