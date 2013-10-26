@@ -12,7 +12,7 @@ class git extends app
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
-		if(!count($_POST))
+		//if(!count($_POST))
 			echo '<style type="text/css">
 				#app-dashboard fieldset { margin-top: 10px; }
 				#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
@@ -144,10 +144,8 @@ class git extends app
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
 		
 		
-		
-		
 		echo '<span class="git_msg">';
-		shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
+		echo shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
 		echo 'Tagged: '.$version;
 		echo '<br />';
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
