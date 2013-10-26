@@ -15,12 +15,12 @@ class git extends app
 		
 		if(!count($_POST))
 			echo '<style type="text/css">
-				#app-apps fieldset { margin-top: 10px; }
-				#app-apps ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
-				#app-apps ul li { margin-top: 10px; }
-				#app-apps h3 { margin-top: 20px; }
-				#app-apps h4 { margin-top: 10px; }
-				#app-apps .git_msg {   background: #AAAADD;
+				#app-dashboard fieldset { margin-top: 10px; }
+				#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+				#app-dashboard ul li { margin-top: 10px; }
+				#app-dashboard h3 { margin-top: 20px; }
+				#app-dashboard h4 { margin-top: 10px; }
+				#app-dashboard .git_msg {   background: #AAAADD;
 					border: medium solid #0000FF;
 					color: #3333CC;
 					display: block;
