@@ -12,7 +12,6 @@ class git extends app
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
-		
 		if(!count($_POST))
 			echo '<style type="text/css">
 				#app-dashboard fieldset { margin-top: 10px; }
@@ -134,7 +133,7 @@ class git extends app
 		}
 		echo '</ul>';
 		
-		echo '<h4>Current branch: '.$current.' '.$update.' <form action="%appurl%tag" method="post">Tag: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form></h4>'; 
+		echo '<h4>Current branch: '.$current.' '.$update.' <form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form></h4>'; 
 		echo nl2br($status);
 	}
 	
@@ -151,6 +150,15 @@ class git extends app
 		shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
 		echo 'Tagged: '.$version;
 		echo '<br />';
+		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
+		echo '</span>';
+		
+		$this->main($vars);
+	}
+	
+	public function tags($vars)
+	{
+		echo '<span class="git_msg">';
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		echo '</span>';
 		
