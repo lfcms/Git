@@ -101,7 +101,15 @@ class git extends app
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
-			: '(<a href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)';
+			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)
+			
+			
+			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
+					<input type="text" name="ticketid" placeholder="Ticket ID" />
+					<input type="submit" value="Submit pull request" />
+				</form>
+			
+			';
 		
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
@@ -117,7 +125,12 @@ class git extends app
 		{
 			$pull = ''; 
 			$parts = explode('/', $branch);
-			if($parts[2] != 'master') $pull = ' [<a href="%appurl%pullrequest/'.$parts[2].'">Submit Pull Request</a>] ';
+			$branch = substr($branch, 0, 7);
+			/*if($parts[2] != 'master') $pull = '
+				<form action="%appurl%pullrequest/'.$parts[2].'">
+					<input type="text" name="ticketid" placeholder="Ticket ID" />
+					<input type="submit" value="Submit pull request" />
+				</form>';*/
 			
 			if($parts[2] == $current)
 			{
@@ -291,11 +304,20 @@ class git extends app
 		echo nl2br(htmlentities($out));
 		echo '</span>';
 		
-		$ticket = $vars[1];
+		/*$ticket = $vars[1];
 		if(preg_match('/\d+/', $vars[1], $match))
-			$ticket = $match[0];
+			$ticket = $match[0];*/
 		
-		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by dev@'.$_SERVER['SERVER_NAME'].'
+		
+		$ticket = intval($_POST['ticketid']);
+		
+		echo $ticket;
+		exit();
+		
+		$email = shell_exec('/usr/bin/git config user.email 2>&1'); 
+		$email = substr($out, 0, -1); // drop linefeed
+		
+		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by '.$email.'
 
 Branch: '.$vars[1].'
 	
@@ -303,7 +325,7 @@ Modified files (master -> '.$vars[1].'):
 '.$out.'
 
 Commits:
-'.$out2, 'From: dev@'.$_SERVER['SERVER_NAME']);
+'.$out2, 'From: dev@'.$_SERVER['HTTP_HOST']); // parse at ticket system
 
 		$this->main($vars);
 	}
