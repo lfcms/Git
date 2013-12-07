@@ -139,8 +139,8 @@ class git extends app
 			else
 			{
 				$delete = '';
-				if($parts[2] != 'master')
-					$delete = ' [<a href="%appurl%rm/'.$parts[2].'">Delete</a>]';
+				if($parts[2] != 'master') 
+					$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
 				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span></li>';
 			}
 		}
