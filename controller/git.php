@@ -310,12 +310,7 @@ class git extends app
 		
 		
 		$ticket = intval($_POST['ticketid']);
-		
-		echo $ticket;
-		exit();
-		
-		$email = shell_exec('/usr/bin/git config user.email 2>&1'); 
-		$email = substr($out, 0, -1); // drop linefeed
+		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 		
 		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by '.$email.'
 
@@ -325,7 +320,7 @@ Modified files (master -> '.$vars[1].'):
 '.$out.'
 
 Commits:
-'.$out2, 'From: dev@'.$_SERVER['HTTP_HOST']); // parse at ticket system
+'.$out2, 'From: '.$email); // parse at ticket system
 
 		$this->main($vars);
 	}
