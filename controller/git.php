@@ -101,7 +101,7 @@ class git extends app
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
-			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'">Merge</a>) (<a href="%appurl%rebase/'.$current.'">Rebase</a>)
+			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a>) (<a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/'.$current.'">Rebase</a>)
 			
 			
 			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
