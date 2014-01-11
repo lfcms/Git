@@ -225,7 +225,7 @@ class git extends app
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		echo '</span>';
-		// change
+		
 		$this->main($vars);
 	}
 	
