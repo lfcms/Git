@@ -156,7 +156,6 @@ class git extends app
 		$rev = trim($rev);
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
 		
-		
 		echo '<span class="git_msg">';
 		$out = shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
 		if(!$out)
@@ -226,12 +225,13 @@ class git extends app
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		echo '</span>';
-		
+		// change
 		$this->main($vars);
 	}
 	
 	public function rebase($vars)
 	{
+		// againsr master
 		if($vars[1] != 'master')
 		{
 			echo '<span class="git_msg">';
