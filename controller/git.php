@@ -231,7 +231,6 @@ class git extends app
 	
 	public function rebase($vars)
 	{
-		// againsr master
 		if($vars[1] != 'master')
 		{
 			echo '<span class="git_msg">';
