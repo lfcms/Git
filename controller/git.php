@@ -310,8 +310,10 @@ class git extends app
 		
 		$ticket = intval($_POST['ticketid']);
 		$email = 'dev@'.$_SERVER['HTTP_HOST'];
-		
-		mail('qa@dev.eflipdomains.com', 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by '.$email.'
+
+		$qamail = 'qa@eflipdomains.com';		
+	
+		mail($qamail, 'Ticket #'.intval($ticket).': Pull Request "'.$vars[1].'"', 'Pull request submitted by '.$email.'
 
 Branch: '.$vars[1].'
 	
