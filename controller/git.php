@@ -35,6 +35,8 @@ class git extends app
 	
 	public function main($vars)
 	{
+		// second rebase test. This should stay, the css comment should appear
+	
 		// Get list of remotes
 		$lines = file($this->path.'/.git/config');
 		$remotes = '';
