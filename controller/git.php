@@ -326,7 +326,8 @@ class git extends app
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		echo '</span>';
 		
-		redirect302($this->lf->appurl);
+		
+		$this->main($vars);
 	}
 	
 	public function commit($vars)
