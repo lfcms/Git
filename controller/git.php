@@ -102,10 +102,10 @@ class git extends app
 			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
 		$status);
 		
-		/*$status = preg_replace(
-			
-			'asdf',
-		$status);*/
+		$status = preg_replace(
+			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
+			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
+		$status);
 		
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
