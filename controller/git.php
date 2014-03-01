@@ -96,8 +96,33 @@ class git extends app
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
 		
+		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
+		$status = preg_replace(
+			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
+			'$0 <a href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
+		$status);
+		
+		/*$status = preg_replace(
+			
+			'asdf',
+		$status);*/
+		
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
+		
+		/*$untracked = explode('Untracked files:', $status);
+		$status = str_replace(
+			$untracked[1],
+			preg_replace(
+				'/#\s+([0-9A-Za-z.\/_]+)/', 
+				'$0 <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a> | <a href="%appurl%add?file=$1">add</a>', 
+				$untracked[1]),
+			$status
+		);*/
+		
+		
+		/*preg_match("/# Untracked files:.*nothing added/", $status, $match);
+		$current = $match[1];*/
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
@@ -149,6 +174,21 @@ class git extends app
 		echo '<h4>Current branch: '.$current.' '.$update.' <form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form></h4>'; 
 		echo nl2br($status);
 	}
+	
+	/*public function delete($args)
+	{
+		chdir($this->path);
+		
+		if(@unlink($_GET['file']))
+			echo '<span class="git_msg">File "'.$_GET['file'].'" deleted</span>';
+		else
+			echo '<span class="git_msg">File "'.$_GET['file'].'" could not be deleted</span>';
+		//$out = shell_exec('/usr/bin/git rm '.escapeshellcmd($_GET['file']).' 2>&1');;
+		
+		
+		
+		$this->main($vars);
+	}*/
 	
 	public function tag($vars)
 	{
@@ -248,11 +288,20 @@ class git extends app
 		
 		$this->main($vars);
 	}
+	
+	public function cohead($vars)
+	{
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout HEAD -- "'.$_GET['file'].'" 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
+	}
 	 
 	public function checkout($vars)
 	{
 		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.$vars[1].'" 2>&1')), 0, -1);
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.escapeshellarg($vars[1]).'" 2>&1')), 0, -1);
 		echo '</span>';
 		
 		redirect302($this->lf->appurl);
@@ -260,7 +309,7 @@ class git extends app
 	
 	public function commit($vars)
 	{
-		$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
+		$out = shell_exec('/usr/bin/git commit -am "'.escapeshellarg($_POST['commit_text']).'" 2>&1');
 		$out = substr($out, 0, -1);
 		
 		
@@ -278,7 +327,7 @@ class git extends app
 			shell_exec('/usr/bin/git config user.name "dev@'.$_SERVER['SERVER_NAME'].'" 2>&1');
 			*/
 			
-			$out = shell_exec('/usr/bin/git commit -am "'.$_POST['commit_text'].'" 2>&1');
+			$out = shell_exec('/usr/bin/git commit -am "'.escapeshellarg($_POST['commit_text']).'" 2>&1');
 			$out = substr($out, 0, -1);
 		}
 		
