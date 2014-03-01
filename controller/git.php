@@ -27,9 +27,6 @@ class git extends app
 					margin: 10px 0;
 					padding: 10px; }
 			</style>';
-			
-			/* a conflicting entry */
-			
 	}
 	
 	public function main($vars)
