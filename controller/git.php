@@ -99,12 +99,12 @@ class git extends app
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
-			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
+			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
 		
 		$status = preg_replace(
 			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
-			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
+			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
 		
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
