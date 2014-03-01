@@ -28,6 +28,8 @@ class git extends app
 					padding: 10px; }
 			</style>';
 			
+			/* a conflicting entry */
+			
 	}
 	
 	public function main($vars)
