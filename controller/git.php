@@ -324,7 +324,7 @@ class git extends app
 	public function checkout($vars)
 	{
 		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git checkout "'.escapeshellarg($vars[1]).'" 2>&1')), 0, -1);
+		echo substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		echo '</span>';
 		
 		redirect302($this->lf->appurl);
