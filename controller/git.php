@@ -99,7 +99,7 @@ class git extends app
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
-			'$0 <a href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
+			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">Checkout from HEAD</a>',
 		$status);
 		
 		/*$status = preg_replace(
@@ -110,19 +110,19 @@ class git extends app
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
-		/*$untracked = explode('Untracked files:', $status);
+		$untracked = explode('Untracked files:', $status);
+		
+		// Handle untracked files
 		$status = str_replace(
 			$untracked[1],
 			preg_replace(
 				'/#\s+([0-9A-Za-z.\/_]+)/', 
-				'$0 <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a> | <a href="%appurl%add?file=$1">add</a>', 
+				'$0 <a href="%appurl%add?file=$1">add</a>', 
 				$untracked[1]),
 			$status
-		);*/
+		); // <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a>
 		
 		
-		/*preg_match("/# Untracked files:.*nothing added/", $status, $match);
-		$current = $match[1];*/
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
@@ -190,6 +190,17 @@ class git extends app
 		$this->main($vars);
 	}*/
 	
+	public function add($args)
+	{
+		chdir($this->path);
+		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
+	}
+	
 	public function tag($vars)
 	{
 		$rev = shell_exec('git rev-list HEAD | wc -l');
@@ -246,6 +257,18 @@ class git extends app
 		
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
+	}
+	
+	public function rmfile($vars)
+	{
+		if($vars[1] == 'master') return 'nope';
+		
+		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git rm '.$_GET['file'].' 2>&1')), 0, -1);
 		echo '</span>';
 		
 		$this->main($vars);
