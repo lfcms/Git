@@ -26,6 +26,9 @@ class git extends app
 					font-weight: bold;
 					margin: 10px 0;
 					padding: 10px; }
+			
+			/* something different */
+			
 			</style>';
 			
 	}
