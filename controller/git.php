@@ -26,17 +26,12 @@ class git extends app
 					font-weight: bold;
 					margin: 10px 0;
 					padding: 10px; }
-					
-				/* special CSS change to rebase*/
-					
 			</style>';
 			
 	}
 	
 	public function main($vars)
 	{
-		// second rebase test. This should stay, the css comment should appear
-	
 		// Get list of remotes
 		$lines = file($this->path.'/.git/config');
 		$remotes = '';
