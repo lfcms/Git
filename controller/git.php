@@ -31,6 +31,11 @@ class git extends app
 	
 	public function main($vars)
 	{
+		//$_SESSION['rebase'] = '--continue';
+		//unset($_SESSION['rebase']);
+		
+		//var_dump($_SESSION['rebase']);
+	
 		// Get list of remotes
 		$lines = file($this->path.'/.git/config');
 		$remotes = '';
@@ -95,6 +100,11 @@ class git extends app
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
 		
+		$status = preg_replace(
+			'/both modified:\s+([0-9A-Za-z.\/_]+)/', 
+			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%add?file=$1">mark resolved</a>',
+		$status);
+		
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
@@ -122,10 +132,12 @@ class git extends app
 		); // <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a>
 		
 		
+		$continue = '';
+		if(isset($_SESSION['rebase'])) $continue = ' --continue';
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
-			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a>) (<a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/'.$current.'">Rebase</a>)
+			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a>) (<a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/">Rebase'.$continue.'</a>)
 			
 			
 			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
@@ -144,6 +156,10 @@ class git extends app
 		echo '<h4>Available Branches</h4>';
 		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
 			<ul>'; 
+		if($current == NULL)
+		{
+				echo '<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
+		}
 		
 		foreach($branches as $branch)
 		{
@@ -291,20 +307,29 @@ class git extends app
 	
 	public function rebase($vars)
 	{
-		if($vars[1] != 'master')
+		$rebase = "master ";
+		if(isset($_SESSION['rebase'])) $rebase = '--continue ';
+		
+		$out = substr(nl2br(shell_exec('/usr/bin/git rebase '.$rebase.'2>&1')), 0, -1);
+		
+		if(preg_match('/git rebase \(?--continue/', $out))
+			$_SESSION['rebase'] = '--continue ';
+		else
+			unset($_SESSION['rebase']);
+		
+		// hopefully this never loses tones of data
+		if(preg_match('/No changes/', $out))
 		{
-			$continue = "";
-			if(isset($_SESSION['rebase'])) $continue = $_SESSION['rebase'];
-			
-			$out = substr(nl2br(shell_exec('/usr/bin/git rebase master '.$continue.'2>&1')), 0, -1);
-			if(preg_match('/git rebase --continue/', $out))
-				$_SESSION['rebase'] = '--continue ';
-			echo '<span class="git_msg">';
-			echo $out;
-			echo '</span>';
-			
-			
+			unset($_SESSION['rebase']);
+			$out = substr(nl2br(shell_exec('/usr/bin/git rebase --skip 2>&1')), 0, -1);
 		}
+		 
+		
+		echo '<span class="git_msg">';
+		echo $out;
+		echo '</span>';
+			
+			
 		$this->main($vars);
 	}
 	
