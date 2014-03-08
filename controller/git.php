@@ -184,8 +184,6 @@ class git extends app
 			echo '<span class="git_msg">File "'.$_GET['file'].'" could not be deleted</span>';
 		//$out = shell_exec('/usr/bin/git rm '.escapeshellcmd($_GET['file']).' 2>&1');;
 		
-		
-		
 		$this->main($vars);
 	}*/
 	
@@ -295,9 +293,17 @@ class git extends app
 	{
 		if($vars[1] != 'master')
 		{
+			$continue = "";
+			if(isset($_SESSION['rebase'])) $continue = $_SESSION['rebase'];
+			
+			$out = substr(nl2br(shell_exec('/usr/bin/git rebase master '.$continue.'2>&1')), 0, -1);
+			if(preg_match('/git rebase --continue/', $out))
+				$_SESSION['rebase'] = '--continue ';
 			echo '<span class="git_msg">';
-			echo substr(nl2br(shell_exec('/usr/bin/git rebase master  2>&1')), 0, -1);
+			echo $out;
 			echo '</span>';
+			
+			
 		}
 		$this->main($vars);
 	}
@@ -381,7 +387,7 @@ class git extends app
 		
 		
 		$ticket = intval($_POST['ticketid']);
-		$email = 'dev@'.$_SERVER['SERVER_NAME'];
+		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 
 		$qamail = 'qa@eflipdomains.com';		
 	
