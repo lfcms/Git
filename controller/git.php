@@ -412,7 +412,7 @@ class git extends app
 		
 		
 		$ticket = intval($_POST['ticketid']);
-		$email = 'dev@'.$_SERVER['SERVER_NAME'];
+		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 
 		$qamail = 'qa@eflipdomains.com';		
 	
