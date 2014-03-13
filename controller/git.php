@@ -26,6 +26,18 @@ class git extends app
 				font-weight: bold;
 				margin: 10px 0;
 				padding: 10px; }
+				
+			.git_current_branch {
+				background: #abc;
+				padding: 0 5px;
+			} 
+			.git_current_branch span {
+				 float: right;
+				 margin-top: 10px;
+			}
+			.git_current_tools {
+				width: 100%;
+			} 
 		</style>';
 	}
 	
@@ -45,6 +57,7 @@ class git extends app
 		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
+		// print any message set before last call, then unset
 		if(isset($_SESSION['git_msg']))
 		{
 			echo '<span class="git_msg">';
@@ -163,7 +176,7 @@ class git extends app
 			<ul>'; 
 		if($current == NULL)
 		{
-				echo '<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
+				echo '<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span>'.$branch.'<span></form></li>';
 		}
 		
 		foreach($branches as $branch)
@@ -179,7 +192,14 @@ class git extends app
 			
 			if($parts[2] == $current)
 			{
-				echo '<li><form action="%appurl%commit" method="post"><strong>'.$parts[2].'</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span style="float: right">'.$branch.'<span></form></li>';
+				echo '<li class="git_current_branch">
+					<form action="%appurl%commit" method="post">
+						<strong>'.$parts[2].'</strong> 
+						<input type="text" name="commit_text" placeholder="Commit text"/> 
+						<input type="submit" value="Commit" />'.$pull.' 
+						<span style="float: right">'.$branch.'</span></form>
+						<div class="git_current_tools">'.$update.'</div>
+				</li>';
 			}
 			else
 			{
@@ -191,7 +211,7 @@ class git extends app
 		}
 		echo '</ul>';
 		
-		echo /*$current.' '.*/$update; 
+		//echo /*$current.' '.*/$update; 
 		echo '<h4>Status</h4>';
 		echo nl2br($status);
 	}
@@ -434,12 +454,17 @@ class git extends app
 	 
 	public function checkout($vars)
 	{
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
+		
+		redirect302(); 
+		/*
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		echo '</span>';
 		
+	
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function commit($vars)
