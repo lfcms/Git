@@ -191,7 +191,7 @@ class git extends app
 						<strong>'.$parts[2].'</strong> 
 						<input type="text" name="commit_text" placeholder="Commit text"/> 
 						<input type="submit" value="Commit" />'.$pull.' 
-						<span style="float: right">'.$branch.'</span></form>
+						<span style="float: right">(selected) '.$branch.'</span></form>
 						<div class="git_current_tools">'.$update.'</div>
 				</li>';
 			}
