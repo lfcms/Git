@@ -296,27 +296,57 @@ class git extends app
 		
 		$type = array('apps', 'skins');
 		
-		echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1';
+		//echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1';
 		
 		chdir(ROOT.$type[intval($_POST['type'])]);
 		
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
 		
-		echo '<span class="git_msg">';
+		redirect302();
+		
+	/*	echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
+	}
+	
+	public function addremotes($args)
+	{
+		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
+		
+		//$type = array('apps', 'skins');
+		
+		//echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1';
+		
+		//chdir(ROOT.$type[intval($_POST['type'])]);
+		
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git remote add "'.escapeshellcmd($_POST['title']).'" "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
+		
+		redirect302();
+		
+	/*	echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);*/
 	}
 	
 	public function add($args)
 	{
 		chdir($this->path);
 		
-		echo '<span class="git_msg">';
+		
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1')), 0, -1);
+		echo '</span>';
+		
+		redirect302();
+		
+		/*echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1')), 0, -1);
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function tag($vars)
@@ -357,7 +387,37 @@ class git extends app
 		
 		echo nl2br(print_r($ini_array,true));*/
 		
-		echo '<span class="git_msg">';
+		echo '<form action="%appurl%rmremote" method="post">
+			<a href="%appurl%">Back</a>
+			<h4>Remote Management</h4>';
+		
+		echo '<select name="remote" id="">';
+		$lines = file($this->path.'/.git/config');
+		foreach($lines as $line)
+			if(preg_match('/^\[remote "([^"]+)"|url =/', $line, $match))
+			{
+				if($match[0] != 'url =') echo '<option value="'.$match[1].'">['.$match[1].'] ';
+				if($match[0] == 'url =') echo $line.'</option>';
+				
+				//'</option>';
+				//echo '<option>'.$line.'</option>';
+			}
+		echo '</select>
+			<input type="submit" value="Delete remote" /> 
+			</h3>
+		</form>';
+		
+		echo '<h3>Add remote</h3>';
+		echo '<form action="%appurl%addremotes" id="git_add_repo_form" method="post">
+			
+				Remote title: <input type="text" name="title" placeholder="origin" />
+				Remote URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
+				
+				<input type="submit" value="Add remote" />
+		</form>';
+		
+		
+		/*echo '<span class="git_msg">';
 		$config = "";
 		$lines = file($this->path.'/.git/config');
 		foreach($lines as $line)
@@ -365,7 +425,16 @@ class git extends app
 				echo $line.'<br />';
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
+	}
+	
+	public function rmremote($args)
+	{
+		print_r($_POST);
+		
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git remote rm '.escapeshellcmd($_POST['remote']).' 2>&1')), 0, -1);
+		
+		//redirect302();
 	}
 	
 	public function rm($vars)
