@@ -79,7 +79,7 @@ class git extends app
 			if(is_dir(ROOT.'apps/'.$app.'/.git'))
 			{
 				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
-					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.'</option>';
+					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.' (selected)</option>';
 				else
 					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
 			}
