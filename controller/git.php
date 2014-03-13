@@ -184,7 +184,7 @@ class git extends app
 					<input type="submit" value="Submit pull request" />
 				</form>';*/
 			
-			if($parts[2] == $current)
+			if($parts[2] == $current) 
 			{
 				echo '<li class="git_current_branch">
 					<form action="%appurl%commit" method="post">
