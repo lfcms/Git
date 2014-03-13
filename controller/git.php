@@ -81,7 +81,7 @@ class git extends app
 		}
 		echo '</optgroup>';
 		
-		echo '</select><input type="submit" value="Change Repo" /></h3></form></div>';
+		echo '</select> <input type="submit" value="Change Repo" /></h3></form></div>';
 		
 		echo '
 			<form action="%appurl%pushpull" method="post">
