@@ -24,7 +24,7 @@ class git extends app
 				color: #3333CC;
 				display: block;
 				font-weight: bold;
-				margin: 10px 0;
+				margin: 10px 0 0 0;
 				padding: 10px; }
 				
 			.git_current_branch {
