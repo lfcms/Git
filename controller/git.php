@@ -485,11 +485,26 @@ class git extends app
 		$out2 = shell_exec('/usr/bin/git cherry -v master 2>&1'); 
 		$out2 = substr($out2, 0, -1);
 		
-		echo '<span class="git_msg">
+		$msg = 'Pull request submitted by '.$email.'
+
+Branch: '.$vars[1].'
+	
+Modified files (master -> '.$vars[1].'):
+'.$out.'
+
+Commits:
+'.$out2;
+		
+		$_SESSION['git_msg'] = $msg;
+		
+		redirect302();
+		
+		
+		/*echo '<span class="git_msg">
 			Pull Request submitted<br /><br />
 			Modified files (master -> '.$vars[1].'):<br />';
 		echo nl2br(htmlentities($out));
-		echo '</span>';
+		echo '</span>';*/
 		
 		/*$ticket = $vars[1];
 		if(preg_match('/\d+/', $vars[1], $match))
@@ -504,15 +519,7 @@ class git extends app
 		mail(
 			$qamail, 
 			'Ticket #'.intval($ticket).": Pull Request '".$vars[1]."'", 
-			'Pull request submitted by '.$email.'
-
-Branch: '.$vars[1].'
-	
-Modified files (master -> '.$vars[1].'):
-'.$out.'
-
-Commits:
-'.$out2, 'From: '.$email); // parse at ticket system
+			$msg, 'From: '.$email); // parse at ticket system
 
 		$this->main($vars);
 	}
@@ -521,7 +528,9 @@ Commits:
 	{
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
-		echo '<span class="git_msg">';
+		ob_start();
+		
+		//echo '<span class="git_msg">';
 		echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
 		if($_POST['branch'] != 'master')
 			echo nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellarg($_POST['branch']).' 2>&1'));
@@ -530,8 +539,12 @@ Commits:
 		if($match[1] == 'push') $tags = ' --tags';
 		
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
-		echo '</span>';
+		//echo '</span>';
 		
-		$this->main($vars);
+		$_SESSION['git_msg'] = ob_get_clean();
+		
+		redirect302();
+		
+		//$this->main($vars);
 	}
 }
