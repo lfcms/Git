@@ -245,10 +245,10 @@ class git extends app
 		</form>';
 		
 		echo '<h3>Add Repo</h3>';
-		echo '<form action="%appurl%gitclone" id="git_add_repo_form">
+		echo '<form action="%appurl%gitclone" id="git_add_repo_form" method="post">
 			Type: <select name="type" id="">
-					<option value="1">App</option>
-					<option value="2">Skin</option>
+					<option value="0">App</option>
+					<option value="1">Skin</option>
 				</select>
 				
 				Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
@@ -263,7 +263,9 @@ class git extends app
 		
 		$type = array('apps', 'skins');
 		
-		chdir(ROOT.'lf/'.$type[intval($_POST['type'])]);
+		echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1';
+		
+		chdir(ROOT.$type[intval($_POST['type'])]);
 		
 		
 		echo '<span class="git_msg">';
