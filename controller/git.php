@@ -46,9 +46,10 @@ class git extends app
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
 		echo '<div>
+		<h4>Tools</h4>
 		<form action="%appurl%" method="post">
-			<h3>
-			<a href="%appurl%repo">Repo</a>: <select name="newgitpath" />';
+			
+			<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: <select name="newgitpath" />';
 			if(is_dir(ROOT.'../.git')) 
 				echo '
 					<optgroup label="System">
@@ -81,7 +82,7 @@ class git extends app
 		}
 		echo '</optgroup>';
 		
-		echo '</select> <input type="submit" value="Change Repo" /></h3></form></div>';
+		echo '</select> <input type="submit" value="Change Repo" /></form></div>';
 		
 		echo '
 			<form action="%appurl%pushpull" method="post">
@@ -89,7 +90,8 @@ class git extends app
 					/ <input type="text" name="branch" placeholder="master" />
 					<input type="submit" name="direction" value="pull" />
 					<input type="submit" name="direction" value="push" /> 
-			</form> ';
+			</form>
+			<form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form>';
 		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
@@ -146,8 +148,7 @@ class git extends app
 	
 		$branches = explode("\n", $branches, -1);
 		
-		
-		echo '<h4>Available Branches</h4>';
+		echo '<h4>Branches</h4>';
 		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
 			<ul>'; 
 		if($current == NULL)
@@ -180,7 +181,8 @@ class git extends app
 		}
 		echo '</ul>';
 		
-		echo '<h4>Current branch: '.$current.' '.$update.' <form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form></h4>'; 
+		echo /*$current.' '.*/$update; 
+		echo '<h4>Status</h4>';
 		echo nl2br($status);
 	}
 	
@@ -200,12 +202,9 @@ class git extends app
 	public function repo($args)
 	{
 		
-		
-		
-		
 		echo '<form action="#" method="post">
-			<h3>
-			<a href="%appurl%">Back</a><br />
+			<a href="%appurl%">Back</a>
+			<h4>Repo Management</h4>
 			<select name="newgitpath" />';
 			if(is_dir(ROOT.'../.git')) 
 				echo '
