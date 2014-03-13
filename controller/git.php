@@ -35,6 +35,9 @@ class git extends app
 				 float: right;
 				 margin-top: 10px;
 			}
+			.git_current_branch a {
+				color: #000;
+			}
 			.git_current_tools {
 				width: 100%;
 			} 
@@ -56,15 +59,6 @@ class git extends app
 				$remotes .= '<option value="'.$match[1].'">'.$match[1].'</option>';
 		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
-		
-		// print any message set before last call, then unset
-		if(isset($_SESSION['git_msg']))
-		{
-			echo '<span class="git_msg">';
-			echo nl2br($_SESSION['git_msg']);
-			echo '</span>';
-			unset($_SESSION['git_msg']);
-		}
 		
 		
 		
@@ -156,7 +150,7 @@ class git extends app
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
-			: '(<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a>) (<a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/">Rebase'.$continue.'</a>)
+			: '<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a> | <a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/">Rebase'.$continue.'</a>
 			
 			
 			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
@@ -214,6 +208,16 @@ class git extends app
 		//echo /*$current.' '.*/$update; 
 		echo '<h4>Status</h4>';
 		echo nl2br($status);
+		
+		
+		// print any message set before last call, then unset
+		if(isset($_SESSION['git_msg']))
+		{
+			echo '<span class="git_msg">';
+			echo nl2br($_SESSION['git_msg']);
+			echo '</span>';
+			unset($_SESSION['git_msg']);
+		}
 	}
 	
 	/*public function delete($args)
@@ -436,11 +440,14 @@ class git extends app
 	
 	public function create($vars)
 	{
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
+		
+		redirect302(); /*
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function cohead($vars)
