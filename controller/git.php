@@ -373,11 +373,17 @@ class git extends app
 		if($vars[1] == 'master') return 'nope';
 		
 		
+		
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
+		
+		redirect302();
+		
+		/*
 		echo '<span class="git_msg">';
 		echo substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function rmfile($vars)
