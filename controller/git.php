@@ -13,20 +13,20 @@ class git extends app
 		
 		chdir($this->path);
 		//if(!count($_POST))
-			echo '<style type="text/css">
-				#app-dashboard fieldset { margin-top: 10px; }
-				#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
-				#app-dashboard ul li { margin-top: 10px; }
-				#app-dashboard h3 { margin-top: 20px; }
-				#app-dashboard h4 { margin-top: 10px; }
-				#app-dashboard .git_msg {   background: #AAAADD;
-					border: medium solid #0000FF;
-					color: #3333CC;
-					display: block;
-					font-weight: bold;
-					margin: 10px 0;
-					padding: 10px; }
-			</style>';
+		echo '<style type="text/css">
+			#app-dashboard fieldset { margin-top: 10px; }
+			#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+			#app-dashboard ul li { margin-top: 10px; }
+			#app-dashboard h3 { margin-top: 20px; }
+			#app-dashboard h4 { margin-top: 10px; }
+			#app-dashboard .git_msg {   background: #AAAADD;
+				border: medium solid #0000FF;
+				color: #3333CC;
+				display: block;
+				font-weight: bold;
+				margin: 10px 0;
+				padding: 10px; }
+		</style>';
 	}
 	
 	public function main($vars)
@@ -48,7 +48,7 @@ class git extends app
 		echo '<div>
 		<form action="%appurl%" method="post">
 			<h3>
-			Repo: <select name="newgitpath" />';
+			<a href="%appurl%repo">Repo</a>: <select name="newgitpath" />';
 			if(is_dir(ROOT.'../.git')) 
 				echo '
 					<optgroup label="System">
@@ -58,7 +58,6 @@ class git extends app
 		echo '<optgroup label="Apps">';
 		foreach(scandir(ROOT.'apps') as $app)
 		{
-			if($app[0] == '.') continue;
 			if(is_dir(ROOT.'apps/'.$app.'/.git'))
 			{
 				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
@@ -69,20 +68,15 @@ class git extends app
 		}
 		echo '</optgroup>
 				<optgroup label="Skins">';
+				
 		foreach(scandir(ROOT.'skins') as $skin)
 		{
-			if($skin[0] == '.') continue;
-			
-			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
-				echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
-				
-			
 			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
 			{
 				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
 					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
 				else
-				echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
+					echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
 			}
 		}
 		echo '</optgroup>';
@@ -202,6 +196,82 @@ class git extends app
 		
 		$this->main($vars);
 	}*/
+	
+	public function repo($args)
+	{
+		
+		
+		
+		
+		echo '<form action="#" method="post">
+			<h3>
+			<a href="%appurl%">Back</a><br />
+			<select name="newgitpath" />';
+			if(is_dir(ROOT.'../.git')) 
+				echo '
+					<optgroup label="System">
+						<option value="'.ROOT.'..">LittlefootCMS</option>
+					</optgroup>';
+		
+		echo '<optgroup label="Apps">';
+		foreach(scandir(ROOT.'apps') as $app)
+		{
+			if(is_dir(ROOT.'apps/'.$app.'/.git'))
+			{
+				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
+					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.'</option>';
+				else
+					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
+			}
+		}
+		echo '</optgroup>
+				<optgroup label="Skins">';
+				
+		foreach(scandir(ROOT.'skins') as $skin)
+		{
+			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
+			{
+				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
+					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
+				else
+					echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
+			}
+		}
+		echo '</optgroup>';
+		
+		echo '</select> 
+			<input type="submit" disabled="disabled" value="Delete (not implemented)" /> 
+			</h3>
+		</form>';
+		
+		echo '<h3>Add Repo</h3>';
+		echo '<form action="%appurl%gitclone" id="git_add_repo_form">
+			Type: <select name="type" id="">
+					<option value="1">App</option>
+					<option value="2">Skin</option>
+				</select>
+				
+				Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
+				
+				<input type="submit" value="Clone" />
+		</form>';
+	}
+	
+	public function gitclone($args)
+	{
+		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
+		
+		$type = array('apps', 'skins');
+		
+		chdir(ROOT.'lf/'.$type[intval($_POST['type'])]);
+		
+		
+		echo '<span class="git_msg">';
+		echo substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
+		echo '</span>';
+		
+		$this->main($vars);
+	}
 	
 	public function add($args)
 	{
