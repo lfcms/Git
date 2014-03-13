@@ -45,6 +45,16 @@ class git extends app
 		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
+		if(isset($_SESSION['git_msg']))
+		{
+			echo '<span class="git_msg">';
+			echo nl2br($_SESSION['git_msg']);
+			echo '</span>';
+			unset($_SESSION['git_msg']);
+		}
+		
+		
+		
 		echo '<div>
 		<h4>Tools</h4>
 		<form action="%appurl%" method="post">
@@ -456,11 +466,15 @@ class git extends app
 			$out = substr($out, 0, -1);
 		}
 		
+		$_SESSION['git_msg'] = $out;
+		
+		redirect302();
+		/*
 		echo '<span class="git_msg">';
 		echo nl2br($out);
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function pullrequest($vars)
