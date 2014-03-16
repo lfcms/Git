@@ -26,6 +26,14 @@ class git extends app
 				font-weight: bold;
 				margin: 10px 0 0 0;
 				padding: 10px; }
+			#app-dashboard .history {   
+				background: #abc;
+				border: medium solid #789;
+				color: #000;
+				display: block;
+				font-weight: bold;
+				margin: 10px 0 0 0;
+				padding: 10px; }
 				
 			.git_current_branch {
 				background: #abc;
@@ -109,6 +117,7 @@ class git extends app
 					<input type="submit" name="direction" value="push" /> 
 			</form>
 			<form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form>';
+		echo '<a href="%appurl%history">View history</a>';
 		
 		// Get current branch
 		$status = shell_exec('/usr/bin/git status');
@@ -233,61 +242,32 @@ class git extends app
 		$this->main($vars);
 	}*/
 	
-	public function repo($args)
+	public function history($args)
 	{
+		if(isset($args[1]))
+		{
+			
+			echo '<span class="git_msg">';
+			// checkout new branch
+			echo substr(nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellcmd($args[1]).' '.escapeshellcmd($args[1]).' 2>&1')), 0, -1);
+			echo '</span>';
+		}
+	
+		$out = substr(nl2br(shell_exec('/usr/bin/git log --graph --pretty=oneline --abbrev-commit 2>&1')), 0, -1);
 		
-		echo '<form action="#" method="post">
+		$out = preg_replace("/(\*[^'0-9a-f]+)([0-9a-f]+)/", 
+			'$1 <a href="%appurl%history/$2">$2</a> ', 
+			$out);
+		
+		echo '
 			<a href="%appurl%">Back</a>
-			<h4>Repo Management</h4>
-			<select name="newgitpath" />';
-			if(is_dir(ROOT.'../.git')) 
-				echo '
-					<optgroup label="System">
-						<option value="'.ROOT.'..">LittlefootCMS</option>
-					</optgroup>';
+			<h4>History</h4>
+			<p>Click a hash to branch from it</p>
+		<span class="history">';
+		echo $out;
+		echo '</span>';
 		
-		echo '<optgroup label="Apps">';
-		foreach(scandir(ROOT.'apps') as $app)
-		{
-			if(is_dir(ROOT.'apps/'.$app.'/.git'))
-			{
-				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
-					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.'</option>';
-				else
-					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
-			}
-		}
-		echo '</optgroup>
-				<optgroup label="Skins">';
-				
-		foreach(scandir(ROOT.'skins') as $skin)
-		{
-			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
-			{
-				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
-					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
-				else
-					echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
-			}
-		}
-		echo '</optgroup>';
 		
-		echo '</select> 
-			<input type="submit" disabled="disabled" value="Delete (not implemented)" /> 
-			</h3>
-		</form>';
-		
-		echo '<h3>Add Repo</h3>';
-		echo '<form action="%appurl%gitclone" id="git_add_repo_form" method="post">
-			Type: <select name="type" id="">
-					<option value="0">App</option>
-					<option value="1">Skin</option>
-				</select>
-				
-				Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
-				
-				<input type="submit" value="Clone" />
-		</form>';
 	}
 	
 	public function gitclone($args)
