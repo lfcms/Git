@@ -355,6 +355,7 @@ class git extends app
 		$rev = trim($rev);
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
 		
+		ob_start();
 		echo '<span class="git_msg">';
 		$out = shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
 		if(!$out)
@@ -365,16 +366,28 @@ class git extends app
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		echo '</span>';
 		
-		$this->main($vars);
+		
+		$_SESSION['git_msg'] = ob_get_clean();
+		
+		redirect302();
+		
+		/*
+		$this->main($vars);*/
 	}
 	
 	public function tags($vars)
 	{
+		
+		$_SESSION['git_msg'] = 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
+		
+		redirect302();
+		
+		/*
 		echo '<span class="git_msg">';
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		echo '</span>';
 		
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function remotes($vars)
