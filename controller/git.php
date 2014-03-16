@@ -606,7 +606,6 @@ Commits:
 		
 		redirect302();
 		
-		
 		/*echo '<span class="git_msg">
 			Pull Request submitted<br /><br />
 			Modified files (master -> '.$vars[1].'):<br />';
@@ -617,7 +616,7 @@ Commits:
 		if(preg_match('/\d+/', $vars[1], $match))
 			$ticket = $match[0];*/
 		
-		
+		/*
 		$ticket = intval($_POST['ticketid']);
 		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 
@@ -628,7 +627,7 @@ Commits:
 			'Ticket #'.intval($ticket).": Pull Request '".$vars[1]."'", 
 			$msg, 'From: '.$email); // parse at ticket system
 
-		$this->main($vars);
+		$this->main($vars);*/
 	}
 	
 	public function pushpull($vars)
