@@ -249,7 +249,7 @@ class git extends app
 			
 			echo '<span class="git_msg">';
 			// checkout new branch
-			echo substr(nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellcmd($args[1]).' '.escapeshellcmd($args[1]).' 2>&1')), 0, -1);
+			echo substr(nl2br(shell_exec('/usr/bin/git checkout -b history'.escapeshellcmd($args[1]).' '.escapeshellcmd($args[1]).' 2>&1')), 0, -1);
 			echo '</span>';
 		}
 	
