@@ -592,7 +592,10 @@ class git extends app
 		$out2 = shell_exec('/usr/bin/git cherry -v master 2>&1'); 
 		$out2 = substr($out2, 0, -1);
 		
+		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 		$msg = 'Pull request submitted by '.$email.'
+		
+'.$_SESSION['git_path'].'
 
 Branch: '.$vars[1].'
 	
@@ -602,32 +605,28 @@ Modified files (master -> '.$vars[1].'):
 Commits:
 '.$out2;
 		
-		$_SESSION['git_msg'] = $msg;
-		
-		redirect302();
-		
 		/*echo '<span class="git_msg">
 			Pull Request submitted<br /><br />
 			Modified files (master -> '.$vars[1].'):<br />';
 		echo nl2br(htmlentities($out));
 		echo '</span>';*/
 		
-		/*$ticket = $vars[1];
+		$ticket = $vars[1];
 		if(preg_match('/\d+/', $vars[1], $match))
-			$ticket = $match[0];*/
+			$ticket = $match[0];
 		
-		/*
 		$ticket = intval($_POST['ticketid']);
-		$email = 'dev@'.$_SERVER['HTTP_HOST'];
 
 		$qamail = 'qa@eflipdomains.com';		
 	
-		mail(
-			$qamail, 
-			'Ticket #'.intval($ticket).": Pull Request '".$vars[1]."'", 
-			$msg, 'From: '.$email); // parse at ticket system
+		// parse at ticket system
+		mail($qamail, 'Ticket #'.intval($ticket).": Pull Request '".$vars[1]."'", $msg, 'From: '.$email); 
 
-		$this->main($vars);*/
+		$this->main($vars);
+		
+		$_SESSION['git_msg'] = $msg;
+		
+		redirect302();
 	}
 	
 	public function pushpull($vars)
