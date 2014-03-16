@@ -356,7 +356,6 @@ class git extends app
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
 		
 		ob_start();
-		echo '<span class="git_msg">';
 		$out = shell_exec('/usr/bin/git tag -a "'.$version.'" -m "'.$version.'" 2>&1');
 		if(!$out)
 			echo 'Tagged: '.$version;
@@ -364,7 +363,6 @@ class git extends app
 			echo $out;
 		echo '<br />';
 		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
-		echo '</span>';
 		
 		
 		$_SESSION['git_msg'] = ob_get_clean();
