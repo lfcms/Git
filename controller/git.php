@@ -253,10 +253,10 @@ class git extends app
 			echo '</span>';
 		}
 	
-		$out = substr(nl2br(shell_exec('/usr/bin/git log --graph --pretty=oneline --abbrev-commit 2>&1')), 0, -1);
+		$out = substr(nl2br(shell_exec("/usr/bin/git log --graph --pretty=format:'%h %ad  %s%x09%ae' --date=short --abbrev-commit 2>&1")), 0, -1);
 		
-		$out = preg_replace("/(\*[^'0-9a-f]+)([0-9a-f]+)/", 
-			'$1 <a href="%appurl%history/$2">$2</a> ', 
+		$out = preg_replace("/(\*[^'0-9a-f]+)([0-9a-f]+)\s(\d{4}-\d{2}-\d{2})/", 
+			'$1 $3 <a href="%appurl%history/$2">$2</a> ', 
 			$out);
 		
 		echo '
