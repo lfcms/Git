@@ -255,13 +255,15 @@ class git extends app
 	
 		$out = substr(nl2br(shell_exec("/usr/bin/git log --graph --pretty=format:'%h %ad  %s%x09%ae' --date=short --abbrev-commit 2>&1")), 0, -1);
 		
+		$num_commits = substr_count($out, '*');
+		
 		$out = preg_replace("/(\*[^'0-9a-f]+)([0-9a-f]+)\s(\d{4}-\d{2}-\d{2})/", 
 			'$1 $3 <a href="%appurl%history/$2">$2</a> ', 
 			$out);
 		
 		echo '
 			<a href="%appurl%">Back</a>
-			<h4>History</h4>
+			<h4>History ('.$num_commits.' commits)</h4>
 			<p>Click a hash to branch from it</p>
 		<span class="history">';
 		echo $out;
