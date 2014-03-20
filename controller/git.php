@@ -31,46 +31,75 @@ class git extends app
 		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
-		?>
-		<div>
-		<h4>Tools</h4>
-		<form action="%appurl%" method="post">
-			
-			<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: 
-			<select name="newgitpath" />
-				<?php if(is_dir(ROOT.'../.git')) : ?>
-				<optgroup label="System">
-					<option value="<?=ROOT;?>..">LittlefootCMS</option>
-				</optgroup>
-				<?php endif; ?>
-		
-		<?php
-		
-		echo '<optgroup label="Apps">';
+		// Generate app <option>s
+		$app_options = '';
 		foreach(scandir(ROOT.'apps') as $app)
 		{
 			if(is_dir(ROOT.'apps/'.$app.'/.git'))
 			{
 				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
-					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.' (selected)</option>';
+					$app_options .= '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.' (selected)</option>';
 				else
-					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
+					$app_options .= '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
 			}
 		}
-		echo '</optgroup>
-				<optgroup label="Skins">';
-				
+		
+		// same thing but skins
+		$skin_options = '';
 		foreach(scandir(ROOT.'skins') as $skin)
 		{
 			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
 			{
 				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
-					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
+					$skin_options .= '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
 				else
-					echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
+					$skin_options .= '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
 			}
 		}
-		echo '</optgroup>';
+		
+		?>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div id="git_main">
+			<h4>Tools</h4>
+			<form action="%appurl%" method="post">
+				
+				<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: 
+				<select name="newgitpath" />
+					<?php if(is_dir(ROOT.'../.git')) : ?>
+					<optgroup label="System">
+						<option value="<?=ROOT;?>..">LittlefootCMS</option>
+					</optgroup>
+					<?php endif; ?>
+					<optgroup label="Apps"><?=$app_options;?></optgroup>
+					<optgroup label="Skins"><?=$skin_options;?></optgroup>
+				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<?php
+				
 		
 		echo '</select> <input type="submit" value="Change Repo" /></form></div>';
 		
