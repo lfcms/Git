@@ -1,0 +1,39 @@
+#app-dashboard fieldset { margin-top: 10px; }
+#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
+#app-dashboard ul li { margin-top: 10px; }
+#app-dashboard h3 { /*margin-top: 20px;*/color: #00AA63; }
+/*#app-dashboard h4 { margin-top: 10px; }*/
+#app-dashboard .git_msg {   
+	background: #AAAADD;
+	border: medium solid #0000FF;
+	color: #3333CC;
+	display: block;
+	font-weight: bold;
+	margin: 10px 0 0 0;
+	padding: 10px; }
+#app-dashboard .history {   
+	background: #abc;
+	border: medium solid #789;
+	color: #000;
+	display: block;
+	font-weight: bold;
+	margin: 10px 0 0 0;
+	padding: 10px; }
+	
+.git_current_branch {
+	background: #abc;
+	padding: 0 5px;
+} 
+.git_current_branch span {
+	 float: right;
+	 margin-top: 10px;
+}
+.git_current_branch a {
+	color: #000;
+}
+.git_current_tools {
+	width: 100%;
+} 
+#git_tools {
+	margin-bottom: 20px;
+}

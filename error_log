@@ -1,0 +1,77 @@
+[11-Jan-2014 00:29:49 America/New_York] PHP Parse error:  syntax error, unexpected T_SL in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 228
+[11-Jan-2014 00:29:50 America/New_York] PHP Parse error:  syntax error, unexpected T_SL in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 228
+[11-Jan-2014 00:29:53 America/New_York] PHP Parse error:  syntax error, unexpected T_SL in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 228
+[08-Mar-2014 11:34:16 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 297
+[08-Mar-2014 12:04:53 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 14
+[08-Mar-2014 12:04:53 America/New_York] PHP Warning:  file(/home/bios/public_html/littlefoot/lf/apps/pages/.git/config) [<a href='function.file'>function.file</a>]: failed to open stream: No such file or directory in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 35
+[08-Mar-2014 12:04:53 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 37
+[08-Mar-2014 12:04:55 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 14
+[08-Mar-2014 12:04:55 America/New_York] PHP Warning:  file(/home/bios/public_html/littlefoot/lf/apps/pages/.git/config) [<a href='function.file'>function.file</a>]: failed to open stream: No such file or directory in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 35
+[08-Mar-2014 12:04:55 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 37
+[08-Mar-2014 12:13:35 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ']' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 430
+[08-Mar-2014 13:03:40 America/New_York] PHP Fatal error:  Class 'git' not found in /home/bios/public_html/littlefoot/lf/system/littlefoot.php on line 748
+[13-Mar-2014 07:39:34 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 266
+[13-Mar-2014 07:40:14 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 266
+[13-Mar-2014 07:40:25 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 268
+[13-Mar-2014 17:33:16 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 245
+[13-Mar-2014 17:40:55 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 245
+[13-Mar-2014 17:41:51 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 245
+[13-Mar-2014 17:59:10 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting ',' or ';' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 247
+[13-Mar-2014 18:01:52 America/New_York] PHP Parse error:  syntax error, unexpected T_STRING, expecting T_FUNCTION in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 423
+[13-Mar-2014 18:05:38 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or '$' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 136
+[13-Mar-2014 18:08:03 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ')' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 136
+[13-Mar-2014 18:09:37 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ')' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 136
+[13-Mar-2014 18:11:13 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 256
+[13-Mar-2014 18:16:33 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 424
+[13-Mar-2014 18:23:13 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 425
+[13-Mar-2014 18:44:48 America/New_York] PHP Fatal error:  Class 'git' not found in /home/bios/public_html/littlefoot/lf/system/littlefoot.php on line 750
+[13-Mar-2014 18:46:46 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 257
+[13-Mar-2014 18:48:43 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 257
+[13-Mar-2014 18:51:06 America/New_York] PHP Warning:  Unterminated comment starting line 414 in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 414
+[13-Mar-2014 18:51:06 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 416
+[13-Mar-2014 18:51:24 America/New_York] PHP Warning:  Unterminated comment starting line 414 in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 414
+[13-Mar-2014 18:51:24 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 416
+[13-Mar-2014 18:51:54 America/New_York] PHP Parse error:  syntax error, unexpected T_STRING, expecting T_VARIABLE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 418
+[13-Mar-2014 19:16:30 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 14
+[13-Mar-2014 19:16:30 America/New_York] PHP Warning:  file(/home/bios/public_html/littlefoot/lf/apps/blog/.git/config) [<a href='function.file'>function.file</a>]: failed to open stream: No such file or directory in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 55
+[13-Mar-2014 19:16:30 America/New_York] PHP Warning:  Invalid argument supplied for foreach() in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 57
+[13-Mar-2014 19:16:33 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 14
+[13-Mar-2014 19:16:39 America/New_York] PHP Warning:  chdir() [<a href='function.chdir'>function.chdir</a>]: No such file or directory (errno 2) in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 14
+[15-Mar-2014 20:46:31 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 613
+[16-Mar-2014 12:08:50 America/New_York] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 244
+[16-Mar-2014 12:08:51 America/New_York] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 244
+[16-Mar-2014 12:10:10 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ']' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 418
+[16-Mar-2014 12:10:44 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 586
+[16-Mar-2014 12:10:59 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 138
+[16-Mar-2014 12:14:36 America/New_York] PHP Parse error:  syntax error, unexpected T_ECHO in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:14:36 America/New_York] PHP Parse error:  syntax error, unexpected T_ECHO in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:14:37 America/New_York] PHP Parse error:  syntax error, unexpected T_ECHO in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:14:38 America/New_York] PHP Parse error:  syntax error, unexpected T_ECHO in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:15:14 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 138
+[16-Mar-2014 12:18:54 America/New_York] PHP Fatal error:  Class 'git' not found in /home/bios/public_html/littlefoot/lf/system/littlefoot.php on line 748
+[16-Mar-2014 12:19:25 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:19:26 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:19:27 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 251
+[16-Mar-2014 12:19:32 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 416
+[16-Mar-2014 12:22:33 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting T_FUNCTION in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 262
+[16-Mar-2014 12:22:52 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 138
+[16-Mar-2014 12:23:24 America/New_York] PHP Warning:  Unterminated comment starting line 589 in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 589
+[16-Mar-2014 12:23:24 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 589
+[16-Mar-2014 12:27:29 America/New_York] PHP Parse error:  syntax error, unexpected '{' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 248
+[16-Mar-2014 12:27:29 America/New_York] PHP Parse error:  syntax error, unexpected '{' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 248
+[16-Mar-2014 12:27:30 America/New_York] PHP Parse error:  syntax error, unexpected '{' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 248
+[16-Mar-2014 12:27:35 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 258
+[19-Mar-2014 19:02:32 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or T_DOLLAR_OPEN_CURLY_BRACES or T_CURLY_OPEN in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 256
+[19-Mar-2014 19:02:44 America/New_York] PHP Warning:  Unterminated comment starting line 411 in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 411
+[19-Mar-2014 19:02:44 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 411
+[19-Mar-2014 19:18:17 America/New_York] PHP Warning:  preg_replace() [<a href='function.preg-replace'>function.preg-replace</a>]: Compilation failed: missing ) at offset 61 in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 262
+[19-Mar-2014 19:18:25 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 582
+[19-Mar-2014 19:20:37 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 583
+[19-Mar-2014 19:23:01 America/New_York] PHP Fatal error:  Class 'git' not found in /home/bios/public_html/littlefoot/lf/system/littlefoot.php on line 748
+[19-Mar-2014 19:27:15 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 418
+[19-Mar-2014 19:28:23 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 418
+[20-Mar-2014 18:28:53 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting T_FUNCTION in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 415
+[20-Mar-2014 18:36:54 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 161
+[20-Mar-2014 18:50:20 America/New_York] PHP Parse error:  syntax error, unexpected $end, expecting ',' or ';' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 130
+[20-Mar-2014 18:50:53 America/New_York] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ')' in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 419
+[20-Mar-2014 18:51:00 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/git/controller/git.php on line 588
