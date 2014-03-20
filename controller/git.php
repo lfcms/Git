@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="%relbase%lf/apps/git/git.css" />
 <?php
 
 class git extends app 
@@ -12,44 +13,6 @@ class git extends app
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
-		//if(!count($_POST))
-		echo '<style type="text/css">
-			#app-dashboard fieldset { margin-top: 10px; }
-			#app-dashboard ul { list-style: none; margin: 0; margin-top: 10px; padding: 0; }
-			#app-dashboard ul li { margin-top: 10px; }
-			#app-dashboard h3 { margin-top: 20px; }
-			#app-dashboard h4 { margin-top: 10px; }
-			#app-dashboard .git_msg {   background: #AAAADD;
-				border: medium solid #0000FF;
-				color: #3333CC;
-				display: block;
-				font-weight: bold;
-				margin: 10px 0 0 0;
-				padding: 10px; }
-			#app-dashboard .history {   
-				background: #abc;
-				border: medium solid #789;
-				color: #000;
-				display: block;
-				font-weight: bold;
-				margin: 10px 0 0 0;
-				padding: 10px; }
-				
-			.git_current_branch {
-				background: #abc;
-				padding: 0 5px;
-			} 
-			.git_current_branch span {
-				 float: right;
-				 margin-top: 10px;
-			}
-			.git_current_branch a {
-				color: #000;
-			}
-			.git_current_tools {
-				width: 100%;
-			} 
-		</style>';
 	}
 	
 	public function main($vars)
@@ -68,18 +31,20 @@ class git extends app
 		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
-		
-		
-		echo '<div>
+		?>
+		<div>
 		<h4>Tools</h4>
 		<form action="%appurl%" method="post">
 			
-			<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: <select name="newgitpath" />';
-			if(is_dir(ROOT.'../.git')) 
-				echo '
-					<optgroup label="System">
-						<option value="'.ROOT.'..">LittlefootCMS</option>
-					</optgroup>';
+			<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: 
+			<select name="newgitpath" />
+				<?php if(is_dir(ROOT.'../.git')) : ?>
+				<optgroup label="System">
+					<option value="<?=ROOT;?>..">LittlefootCMS</option>
+				</optgroup>
+				<?php endif; ?>
+		
+		<?php
 		
 		echo '<optgroup label="Apps">';
 		foreach(scandir(ROOT.'apps') as $app)
