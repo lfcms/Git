@@ -37,3 +37,6 @@
 #git_tools, #git_branches {
 	margin-bottom: 20px;
 }
+#git_tools form {
+	padding: 3px 0;
+	}
