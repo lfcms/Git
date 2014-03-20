@@ -23,50 +23,51 @@
 		<a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
 	</form>
 </div>
-
+<div id="git_branches">
 <h3>Branches</h3>
-<form action="%appurl%create" method="post">
-	Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> 
-	<input type="submit" value="Create" />
-</form>
-<ul>
-	<?php if($current == NULL): ?>
-	<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
-	<?php endif; 
-	
-	foreach($branches as $branch)
-	{
-		$pull = ''; 
-		$parts = explode('/', $branch);
-		$branch = substr($branch, 0, 7);
-		/*if($parts[2] != 'master') $pull = '
-			<form action="%appurl%pullrequest/'.$parts[2].'">
-				<input type="text" name="ticketid" placeholder="Ticket ID" />
-				<input type="submit" value="Submit pull request" />
-			</form>';*/
+	<form action="%appurl%create" method="post">
+		Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> 
+		<input type="submit" value="Create" />
+	</form>
+	<ul>
+		<?php if($current == NULL): ?>
+		<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
+		<?php endif; 
 		
-		if($parts[2] == $current) 
+		foreach($branches as $branch)
 		{
-			?><li class="git_current_branch">
-				<form action="%appurl%commit" method="post">
-					<strong><?=$parts[2];?></strong> 
-					<input type="text" name="commit_text" placeholder="Commit text"/> 
-					<input type="submit" value="Commit" /><?=$pull;?>
-					<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span></form>
-					<div class="git_current_tools"><?=$update;?></div>
-			</li><?php
-		}
-		else
-		{
-			$delete = '';
-			if($parts[2] != 'master') 
-				$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
-			echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span></li>';
-		}
-	}?>
-</ul>
-		
-<h4>Status</h4>
+			$pull = ''; 
+			$parts = explode('/', $branch); 
+			$branch = substr($branch, 0, 7);
+			/*if($parts[2] != 'master') $pull = '
+				<form action="%appurl%pullrequest/'.$parts[2].'">
+					<input type="text" name="ticketid" placeholder="Ticket ID" />
+					<input type="submit" value="Submit pull request" />
+				</form>';*/
+			
+			if($parts[2] == $current) 
+			{
+				?><li class="git_current_branch">
+					<form action="%appurl%commit" method="post">
+						<strong><?=$parts[2];?></strong> 
+						<input type="text" name="commit_text" placeholder="Commit text"/> 
+						<input type="submit" value="Commit" /><?=$pull;?>
+						<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span></form>
+						<div class="git_current_tools"><?=$update;?></div>
+				</li><?php
+			}
+			else
+			{
+				$delete = '';
+				if($parts[2] != 'master') 
+					$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
+				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span></li>';
+			}
+		}?>
+	</ul>
+</div>
+
+<h3>Status</h3>
 <?php 
 echo nl2br($status);
 
