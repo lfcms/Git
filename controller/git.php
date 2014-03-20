@@ -130,7 +130,6 @@ class git extends app
 					<optgroup label="Skins"><?=$skin_options;?></optgroup>
 				</select> 
 				<input type="submit" value="Change Repo" />
-				<a href="%appurl%history">View history</a>
 			</form>
 			<form action="%appurl%pushpull" method="post">
 				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id=""><?=$remotes;?></select> 
@@ -180,7 +179,7 @@ class git extends app
 						<strong>'.$parts[2].'</strong> 
 						<input type="text" name="commit_text" placeholder="Commit text"/> 
 						<input type="submit" value="Commit" />'.$pull.' 
-						<span style="float: right">(selected) '.$branch.'</span></form>
+						<span style="float: right">(<a href="%appurl%history">view history</a>) '.$branch.'</span></form>
 						<div class="git_current_tools">'.$update.'</div>
 				</li>';
 			}
@@ -241,8 +240,13 @@ class git extends app
 			'$1 $3 <a href="%appurl%history/$2">$2</a> ', 
 			$out);
 		
+		$status = shell_exec('/usr/bin/git status');
+		preg_match("/# On branch ([^\n]+)/", $status, $match);
+		$current = $match[1];
+		
 		echo '
 			<a href="%appurl%">Back</a>
+			<h3>'.$_SESSION['git_path'].' on branch "'.$current.'"</h3>
 			<h4>History ('.$num_commits.' commits)</h4>
 			<p>Click a hash to branch from it</p>
 		<span class="history">';
