@@ -154,58 +154,7 @@ class git extends app
 	
 	public function repo($args)
 	{
-		echo '<form action="#" method="post">
-			<a href="%appurl%">Back</a>
-			<h4>Repo Management</h4>
-			<select name="newgitpath" />';
-			if(is_dir(ROOT.'../.git')) 
-				echo '
-					<optgroup label="System">
-						<option value="'.ROOT.'..">LittlefootCMS</option>
-					</optgroup>';
-		
-		echo '<optgroup label="Apps">';
-		foreach(scandir(ROOT.'apps') as $app)
-		{
-			if(is_dir(ROOT.'apps/'.$app.'/.git'))
-			{
-				if($_SESSION['git_path'] == ROOT.'apps/'.$app)
-					echo '<option value="'.ROOT.'apps/'.$app.'" selected="selected">'.$app.'</option>';
-				else
-					echo '<option value="'.ROOT.'apps/'.$app.'">'.$app.'</option>';
-			}
-		}
-		echo '</optgroup>
-				<optgroup label="Skins">';
-				
-		foreach(scandir(ROOT.'skins') as $skin)
-		{
-			if(is_dir(ROOT.'skins/'.$skin.'/.git'))
-			{
-				if($_SESSION['git_path'] == ROOT.'skins/'.$skin)
-					echo '<option value="'.ROOT.'skins/'.$skin.'" selected="selected">'.$skin.'</option>';
-				else
-					echo '<option value="'.ROOT.'skins/'.$skin.'">'.$skin.'</option>';
-			}
-		}
-		echo '</optgroup>';
-		
-		echo '</select> 
-			<input type="submit" disabled="disabled" value="Delete (not implemented)" /> 
-			</h3>
-		</form>';
-		
-		echo '<h3>Add Repo</h3>';
-		echo '<form action="%appurl%gitclone" id="git_add_repo_form" method="post">
-			Type: <select name="type" id="">
-					<option value="0">App</option>
-					<option value="1">Skin</option>
-				</select>
-				
-				Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
-				
-				<input type="submit" value="Clone" />
-		</form>';
+		include 'view/git.repo.php';
 	}
 	
 	public function gitclone($args)
@@ -253,19 +202,9 @@ class git extends app
 	public function add($args)
 	{
 		chdir($this->path);
-		
-		
 		shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1');
-		
 		$_SESSION['git_msg'] = $_GET['file'].' added to git';
-		
 		redirect302();
-		
-		/*echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1')), 0, -1);
-		echo '</span>';
-		
-		$this->main($vars);*/
 	}
 	
 	public function tag($vars)
@@ -287,24 +226,12 @@ class git extends app
 		$_SESSION['git_msg'] = ob_get_clean();
 		
 		redirect302();
-		
-		/*
-		$this->main($vars);*/
 	}
 	
 	public function tags($vars)
 	{
-		
 		$_SESSION['git_msg'] = 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
-		
 		redirect302();
-		
-		/*
-		echo '<span class="git_msg">';
-		echo 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
-		echo '</span>';
-		
-		$this->main($vars);*/
 	}
 	
 	public function remotes($vars)
@@ -370,19 +297,8 @@ class git extends app
 	public function rm($vars)
 	{
 		if($vars[1] == 'master') return 'nope';
-		
-		
-		
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
-		
 		redirect302();
-		
-		/*
-		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
-		echo '</span>';
-		
-		$this->main($vars);*/
 	}
 	
 	public function rmfile($vars)
@@ -391,7 +307,7 @@ class git extends app
 		
 		
 		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git rm '.$_GET['file'].' 2>&1')), 0, -1);
+		echo substr(nl2br(shell_exec('/usr/bin/git rm '.escapeshellcmd($_GET['file']).' 2>&1')), 0, -1);
 		echo '</span>';
 		
 		$this->main($vars);
@@ -446,13 +362,7 @@ class git extends app
 	public function create($vars)
 	{
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
-		
-		redirect302(); /*
-		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
-		echo '</span>';
-		
-		$this->main($vars);*/
+		redirect302();
 	}
 	
 	public function cohead($vars)
@@ -467,16 +377,7 @@ class git extends app
 	public function checkout($vars)
 	{
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
-		
 		redirect302(); 
-		/*
-		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
-		echo '</span>';
-		
-	
-		
-		$this->main($vars);*/
 	}
 	
 	public function commit($vars)
@@ -564,18 +465,13 @@ Commits:
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
 		ob_start();
-		
-		//echo '<span class="git_msg">';
 		echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
 		if($_POST['branch'] != 'master')
 			echo nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellarg($_POST['branch']).' 2>&1'));
-		
 		$tags = '';
 		if($match[1] == 'push') $tags = ' --tags';
-		
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
-		//echo '</span>';
-		
+				
 		$_SESSION['git_msg'] = ob_get_clean();
 		
 		redirect302();
