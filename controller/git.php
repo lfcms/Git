@@ -28,7 +28,6 @@ class git extends app
 		foreach($lines as $line)
 			if(preg_match('/^\[remote "(.+)"/', $line, $match))
 				$remotes .= '<option value="'.$match[1].'">'.$match[1].'</option>';
-		
 		$remotes = str_replace('value="origin"', 'value="origin" selected="selected"', $remotes);
 		
 		// Generate app <option>s
@@ -57,86 +56,24 @@ class git extends app
 			}
 		}
 		
-		?>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<div id="git_main">
-			<h4>Tools</h4>
-			<form action="%appurl%" method="post">
-				
-				<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: 
-				<select name="newgitpath" />
-					<?php if(is_dir(ROOT.'../.git')) : ?>
-					<optgroup label="System">
-						<option value="<?=ROOT;?>..">LittlefootCMS</option>
-					</optgroup>
-					<?php endif; ?>
-					<optgroup label="Apps"><?=$app_options;?></optgroup>
-					<optgroup label="Skins"><?=$skin_options;?></optgroup>
-				
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<?php
-				
-		
-		echo '</select> <input type="submit" value="Change Repo" /></form></div>';
-		
-		echo '
-			<form action="%appurl%pushpull" method="post">
-				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id="">'.$remotes.'</select>
-					/ <input type="text" name="branch" placeholder="master" />
-					<input type="submit" name="direction" value="pull" />
-					<input type="submit" name="direction" value="push" /> 
-			</form>
-			<form action="%appurl%tag" method="post"><a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" /></form>';
-		echo '<a href="%appurl%history">View history</a>';
-		
-		// Get current branch
+		// Get current branch, replace tools into output
 		$status = shell_exec('/usr/bin/git status');
-		
 		$status = preg_replace(
 			'/both modified:\s+([0-9A-Za-z.\/_]+)/', 
 			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%add?file=$1">mark resolved</a>',
 		$status);
-		
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
 			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
-		
 		$status = preg_replace(
 			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
 			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
-		
 		preg_match("/# On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
-		
 		$untracked = explode('Untracked files:', $status);
-		
 		// Handle untracked files
 		$status = str_replace(
 			$untracked[1],
@@ -168,13 +105,62 @@ class git extends app
 	
 		$branches = explode("\n", $branches, -1);
 		
-		echo '<h4>Branches</h4>';
-		echo '<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
-			<ul>'; 
-		if($current == NULL)
-		{
-				echo '<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" />'.$pull.' <span>'.$branch.'<span></form></li>';
-		}
+		?>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div id="git_tools">
+			<h3>Tools</h3>
+			<form action="%appurl%" method="post">
+				<a title="Click to manage your repositories" href="%appurl%repo">Repo</a>: 
+				<select name="newgitpath" />
+					<?php if(is_dir(ROOT.'../.git')) : ?>
+					<optgroup label="System">
+						<option value="<?=ROOT;?>..">LittlefootCMS</option>
+					</optgroup>
+					<?php endif; ?>
+					<optgroup label="Apps"><?=$app_options;?></optgroup>
+					<optgroup label="Skins"><?=$skin_options;?></optgroup>
+				</select> 
+				<input type="submit" value="Change Repo" />
+				<a href="%appurl%history">View history</a>
+			</form>
+			<form action="%appurl%pushpull" method="post">
+				<a href="%appurl%remotes">Remotes</a>: <select name="remote" id=""><?=$remotes;?></select> 
+					/ <input type="text" name="branch" placeholder="master" />
+					<input type="submit" name="direction" value="pull" />
+					<input type="submit" name="direction" value="push" /> 
+			</form>
+			<form action="%appurl%tag" method="post">
+				<a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
+			</form>
+		</div>
+		
+		<h3>Branches</h3>
+		<form action="%appurl%create" method="post">Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> <input type="submit" value="Create" /></form>
+			<ul>
+				<?php if($current == NULL): ?>
+				<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
+				<?php endif; ?>
+		
+		
+		
+		
+		
+		<?php
+				
+		
+		
+		
+		
+		
 		
 		foreach($branches as $branch)
 		{
