@@ -103,6 +103,7 @@ class git extends app
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 		$branches = explode("\n", $branches, -1);
 		
+		chdir(ROOT.'apps/git');
 		include 'view/git.main.php';
 	}
 	
@@ -154,6 +155,7 @@ class git extends app
 	
 	public function repo($args)
 	{
+		chdir(ROOT.'apps/git');
 		include 'view/git.repo.php';
 	}
 	

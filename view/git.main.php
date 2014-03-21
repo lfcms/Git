@@ -24,7 +24,7 @@
 	</form>
 </div>
 <div id="git_branches">
-<h3>Branches</h3>
+	<h3>Branches</h3>
 	<form action="%appurl%create" method="post">
 		Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> 
 		<input type="submit" value="Create" />
