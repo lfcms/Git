@@ -466,23 +466,31 @@ Commits:
 	{
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
-		
-		echo nl2br(shell_exec('/usr/bin/git stash 2>&1'));
-		
 		ob_start();
-		echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
-		if($_POST['branch'] != 'master')
-			echo nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellarg($_POST['branch']).' 2>&1'));
-		else
-			echo nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($_POST['branch']).' 2>&1'));
-		$tags = '';
-		if($match[1] == 'push') $tags = ' --tags';
-		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
-	
-		echo nl2br(shell_exec('/usr/bin/git checkout - 2>&1'));
-				
-		echo nl2br(shell_exec('/usr/bin/git stash pop 2>&1'));
+		if($match[1] == 'push')
+		{
+			$tags = ' --tags';
+			echo substr(nl2br(shell_exec('/usr/bin/git push '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
+		}
+		else if($match[1] == 'pull')
+		{
+			echo nl2br(shell_exec('/usr/bin/git stash 2>&1'));
+			
+			echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
+			if($_POST['branch'] != 'master')
+				echo nl2br(shell_exec('/usr/bin/git checkout -b '.escapeshellarg($_POST['branch']).' 2>&1'));
+			else
+				echo nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($_POST['branch']).' 2>&1'));
+			$tags = '';
+			
+			if($match[1] == 'push') $tags = ' --tags'; // move this to a checkbox
+			
+			echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
 		
+			echo nl2br(shell_exec('/usr/bin/git checkout - 2>&1'));
+					
+			echo nl2br(shell_exec('/usr/bin/git stash pop 2>&1'));
+		}
 		$_SESSION['git_msg'] = ob_get_clean();
 		
 		redirect302();
