@@ -314,7 +314,7 @@ class git extends app
 		
 		$this->main($vars);
 	}
-	
+	/*
 	public function push($vars)
 	{
 		echo '<span class="git_msg">';
@@ -322,15 +322,12 @@ class git extends app
 		echo '</span>';
 		
 		$this->main($vars);
-	}
+	}*/
 	
 	public function merge($vars)
 	{
-		echo '<span class="git_msg">';
-		echo substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
-		echo '</span>';
-		
-		$this->main($vars);
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
+		redirect302();
 	}
 	
 	public function rebase($vars)
