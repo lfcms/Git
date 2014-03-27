@@ -466,6 +466,9 @@ Commits:
 	{
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
+		
+		echo nl2br(shell_exec('/usr/bin/git stash 2>&1'));
+		
 		ob_start();
 		echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
 		if($_POST['branch'] != 'master')
@@ -475,7 +478,11 @@ Commits:
 		$tags = '';
 		if($match[1] == 'push') $tags = ' --tags';
 		echo substr(nl2br(shell_exec('/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).''.$tags.' 2>&1')), 0, -1);
+	
+		echo nl2br(shell_exec('/usr/bin/git checkout - 2>&1'));
 				
+		echo nl2br(shell_exec('/usr/bin/git stash pop 2>&1'));
+		
 		$_SESSION['git_msg'] = ob_get_clean();
 		
 		redirect302();
