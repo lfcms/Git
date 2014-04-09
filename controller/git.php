@@ -65,7 +65,9 @@ class git extends app
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
-			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
+			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0
+			'.substr(nl2br(shell_exec('/usr/bin/git diff HEAD^ HEAD
+ 2>&1')), 0, -1),
 		$status);
 		$status = preg_replace(
 			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
