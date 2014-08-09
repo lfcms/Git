@@ -41,3 +41,4 @@
 #git_tools form {
 	padding: 3px 0;
 	}
+.modified_diff { background: #DEF; white-space: pre; }

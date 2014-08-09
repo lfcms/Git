@@ -63,12 +63,12 @@ class git extends app
 			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%add?file=$1">mark resolved</a>',
 		$status);
 		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
+		
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
-			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0
-			'.substr(nl2br(shell_exec('/usr/bin/git diff HEAD^ HEAD
- 2>&1')), 0, -1),
+			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
+		
 		$status = preg_replace(
 			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
 			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
@@ -77,23 +77,24 @@ class git extends app
 		$current = $match[1];
 		$untracked = explode('Untracked files:', $status);
 		// Handle untracked files
-		$status = str_replace(
-			$untracked[1],
-			preg_replace(
-				'/#\s+([0-9A-Za-z.\/_]+)/', 
-				'$0 <a href="%appurl%add?file=$1">add</a>', 
-				$untracked[1]),
-			$status
-		); // <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a>
+		if(!$untracked)
+			$status = str_replace(
+				$untracked[1],
+				preg_replace(
+					'/#\s+([0-9A-Za-z.\/_]+)/', 
+					'$0 <a href="%appurl%add?file=$1">add</a>', 
+					$untracked[1]),
+				$status
+			); // <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a>
 		
 		
+		//test
 		$continue = '';
 		if(isset($_SESSION['rebase'])) $continue = ' --continue';
 		
 		$update = $current == 'master' 
 			? ''//'<a href="%appurl%push">Push</a>' 
 			: '<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a> | <a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/">Rebase'.$continue.'</a>
-			
 			
 			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
 					<input type="text" name="ticketid" placeholder="Ticket ID" />
@@ -107,6 +108,10 @@ class git extends app
 		
 		chdir(ROOT.'apps/git');
 		include 'view/git.main.php';
+		
+		chdir($this->path);
+		echo '<a href="#" class="modified_showdiff">Hide/Show Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
+		</div>';
 	}
 	
 	/*public function delete($args)

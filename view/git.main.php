@@ -79,3 +79,16 @@ if(isset($_SESSION['git_msg']))
 	echo '</span>';
 	unset($_SESSION['git_msg']);
 }?>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.modified_showdiff').click(
+			function()
+			{
+				$(this).next().toggle();
+				return false;
+			}
+		);
+		$('.modified_showdiff').next().toggle();
+	});
+</script>
