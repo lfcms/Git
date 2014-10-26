@@ -56,13 +56,14 @@ class git extends app
 			}
 		}
 		
+		
 		// Get current branch, replace tools into output
 		$status = shell_exec('/usr/bin/git status');
 		$status = preg_replace(
 			'/both modified:\s+([0-9A-Za-z.\/_]+)/', 
 			'$0 <a '.jsprompt('Are you sure?').'href="%appurl%add?file=$1">mark resolved</a>',
 		$status);
-		//$status = preg_replace('/# modified: [^\n]+/', "$0 checkout", $status);
+		//$status = preg_replace('/^modified: [^\n]+/', "$0 checkout", $status);
 		
 		$status = preg_replace(
 			'/modified:\s+([0-9A-Za-z.\/_]+)/', 
@@ -73,15 +74,20 @@ class git extends app
 			'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
 			'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
 		$status);
-		preg_match("/# On branch ([^\n]+)/", $status, $match);
+		
+		
+		preg_match("/^On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		$untracked = explode('Untracked files:', $status);
+		
+		$untracked = explode("\n\n", $untracked[1]);
+		
 		// Handle untracked files
-		if(!$untracked)
+		if($untracked)
 			$status = str_replace(
 				$untracked[1],
 				preg_replace(
-					'/#\s+([0-9A-Za-z.\/_]+)/', 
+					'/([0-9A-Za-z.\/_]+)/', 
 					'$0 <a href="%appurl%add?file=$1">add</a>', 
 					$untracked[1]),
 				$status
@@ -106,12 +112,64 @@ class git extends app
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
 		$branches = explode("\n", $branches, -1);
 		
-		chdir(ROOT.'apps/git');
-		include 'view/git.main.php';
+		/*include ROOT.'apps/git/model/git.branch.php';		
+		echo '<pre>';
+		print_r($resolve);
+		echo '</pre>';*/
+		
+		//chdir(ROOT.'apps/git');
+		ob_start();
+		include ROOT.'apps/git/view/git.main.php';
+		$main = ob_get_clean();
+		
+		
+		
+		
+		
 		
 		chdir($this->path);
-		echo '<a href="#" class="modified_showdiff">Hide/Show Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
+		// Git Diff		
+		
+		$diff = '<a href="#" class="modified_showdiff">Hide/Show Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
 		</div>';
+		
+		
+		
+		
+		
+		$diff = preg_replace('/(^|\n)(\+[^\n]+)\n/', '$1<div class="modified_diff_to">$2</div>', $diff);
+		
+		$diff = preg_replace('/(^|\n)(-[^\n]+)\n/', '$1<div class="modified_diff_from">$2</div>', $diff);
+		
+		
+		
+		//preg_match_all('/(^|\n)(diff --git a\/)(.*? b).*?(diff --git[^\n]+)?', $diff, $matches);
+		
+	//	preg_match_all('/(diff --git a\/(.*?)(\sb.*?)).*?\n(diff --git)?/', $diff, $matches);
+			
+		/*for($i = 0; $i < count($matches[0]); $i++)
+		{
+			$main = str_replace('', '', $main);
+		}*/
+		
+		
+		
+		echo $main;
+		
+		
+		
+		echo $diff;
+				
+		
+		// Better Status
+		$status = shell_exec('/usr/bin/git status -b --porcelain');
+		
+		echo '<h3>Better Status</h3>';
+		echo nl2br($status);
+		
+		
+		
+		
 	}
 	
 	/*public function delete($args)
@@ -147,7 +205,7 @@ class git extends app
 			$out);
 		
 		$status = shell_exec('/usr/bin/git status');
-		preg_match("/# On branch ([^\n]+)/", $status, $match);
+		preg_match("/^On branch ([^\n]+)/", $status, $match);
 		$current = $match[1];
 		
 		echo '

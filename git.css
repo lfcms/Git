@@ -41,4 +41,11 @@
 #git_tools form {
 	padding: 3px 0;
 	}
-.modified_diff { background: #DEF; white-space: pre; }
+	
+.modified_diff { background: #EEE; white-space: pre; }
+.modified_diff_from { background: #FDD; white-space: pre; }
+.modified_diff_to { background: #DFD; white-space: pre; }
+
+
+#app-dashboard ul { padding-left: 10px; }
+#app-dashboard ul li { border-top: 1px solid #000; margin-top: 10px;  }

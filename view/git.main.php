@@ -29,10 +29,11 @@
 		Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> 
 		<input type="submit" value="Create" />
 	</form>
-	<ul>
-		<?php if($current == NULL): ?>
-		<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
-		<?php endif; 
+	<?php
+		
+		
+		include ROOT.'apps/git/model/git.branch.php';		
+		
 		
 		foreach($branches as $branch)
 		{
@@ -45,6 +46,7 @@
 					<input type="submit" value="Submit pull request" />
 				</form>';*/
 			
+			ob_start(); // capture branch <li>
 			if($parts[2] == $current) 
 			{
 				?><li class="git_current_branch">
@@ -54,17 +56,45 @@
 						<input type="submit" value="Commit" /><?=$pull;?>
 						<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span></form>
 						<div class="git_current_tools"><?=$update;?></div>
-				</li><?php
+				<?php
 			}
 			else
 			{
 				$delete = '';
 				if($parts[2] != 'master') 
 					$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
-				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span></li>';
+				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span>';
 			}
+			$boutput[$parts[2]] = ob_get_clean(); // capture branch <li>
 		}?>
-	</ul>
+		
+		
+		
+	<ul>
+		<?php if($current == NULL): ?>
+		<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
+		<?php endif;
+		
+		function recurseBranches($parent, $boutput, $resolve)
+		{
+			echo '<ul>';
+			foreach($resolve[$parent] as $child)
+			{
+				echo $boutput[$child];
+				if(isset($resolve[$child]))
+				{				
+					recurseBranches($child, $boutput, $resolve);
+				}
+			}
+			echo '</li></ul>';
+		}
+		
+		
+		echo $boutput['master'];
+		recurseBranches('master', $boutput, $resolve);
+		
+		?>
+	</li></ul>
 </div>
 
 <h3>Status</h3>
