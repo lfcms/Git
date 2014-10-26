@@ -80,10 +80,12 @@ class git extends app
 		$current = $match[1];
 		$untracked = explode('Untracked files:', $status);
 		
-		$untracked = explode("\n\n", $untracked[1]);
+		
 		
 		// Handle untracked files
 		if($untracked)
+		{
+			$untracked = explode("\n\n", $untracked[1]);
 			$status = str_replace(
 				$untracked[1],
 				preg_replace(
@@ -92,7 +94,7 @@ class git extends app
 					$untracked[1]),
 				$status
 			); // <a '.jsprompt('Are you sure?').' href="%appurl%delete?file=$1">delete</a>
-		
+		}
 		
 		//test
 		$continue = '';
