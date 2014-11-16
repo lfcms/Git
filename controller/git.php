@@ -305,7 +305,8 @@ class git extends app
 	
 	public function remotes($vars)
 	{
-		if($vars[1] == 'master') return 'nope';
+		if(isset($vars[1]) && $vars[1] == 'master') return 'nope';
+		if(isset($vars[1]) && $vars[1] == 'master') return 'nope';
 		
 		/*$ini = preg_replace('/\s"([^"]+)"/', '$1', file_get_contents($this->path.'/.git/config'));
 		
