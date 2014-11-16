@@ -35,6 +35,8 @@
 		include ROOT.'apps/git/model/git.branch.php';		
 		
 		
+		
+		ob_start(); // capture branch <li>
 		foreach($branches as $branch)
 		{
 			$pull = ''; 
@@ -46,7 +48,6 @@
 					<input type="submit" value="Submit pull request" />
 				</form>';*/
 			
-			ob_start(); // capture branch <li>
 			if($parts[2] == $current) 
 			{
 				?><li class="git_current_branch">
@@ -65,8 +66,11 @@
 					$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
 				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span>';
 			}
-			$boutput[$parts[2]] = ob_get_clean(); // capture branch <li>
-		}?>
+		}
+		
+		$branchesOutput = ob_get_clean();
+		
+		?>
 		
 		
 		
@@ -75,7 +79,7 @@
 		<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
 		<?php endif;
 		
-		function recurseBranches($parent, $boutput, $resolve)
+		/*function recurseBranches($parent, $boutput, $resolve)
 		{
 			echo '<ul>';
 			foreach($resolve[$parent] as $child)
@@ -87,11 +91,15 @@
 				}
 			}
 			echo '</li></ul>';
-		}
+		}*/
 		
 		
-		echo $boutput['master'];
-		recurseBranches('master', $boutput, $resolve);
+		//echo $boutput['master'];
+		//recurseBranches('master', $boutput, $resolve);
+		
+		//foreach($
+		
+		echo $branchesOutput;
 		
 		?>
 	</li></ul>

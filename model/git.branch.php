@@ -90,11 +90,12 @@ foreach($treegraph as $treepart)
 		
 }
 
-foreach($children[0] as $child)
-{
-	if($child == 'master') continue;
-	
-	$resolve['master'][] = $child;
-}
+if(isset($children))
+	foreach($children[0] as $child)
+	{
+		if($child == 'master') continue;
+		
+		$resolve['master'][] = $child;
+	}
 
 ?>

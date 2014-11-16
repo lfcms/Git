@@ -83,7 +83,7 @@ class git extends app
 		
 		
 		// Handle untracked files
-		if($untracked)
+		if(isset($untracked[1]))
 		{
 			$untracked = explode("\n\n", $untracked[1]);
 			$status = str_replace(
