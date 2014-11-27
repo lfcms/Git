@@ -10,6 +10,7 @@
 			<?php endif; ?>
 			<optgroup label="Apps"><?=$app_options;?></optgroup>
 			<optgroup label="Skins"><?=$skin_options;?></optgroup>
+			<optgroup label="Plugins"><?=$plugin_options;?></optgroup>
 		</select> 
 		<input type="submit" value="Change Repo" />
 	</form>

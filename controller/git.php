@@ -56,6 +56,19 @@ class git extends app
 			}
 		}
 		
+		// same thing but plugins
+		$plugin_options = '';
+		foreach(scandir(ROOT.'plugins') as $plugin)
+		{
+			if(is_dir(ROOT.'plugins/'.$plugin.'/.git'))
+			{
+				if($_SESSION['git_path'] == ROOT.'plugins/'.$plugin)
+					$plugin_options .= '<option value="'.ROOT.'plugins/'.$plugin.'" selected="selected">'.$plugin.'</option>';
+				else
+					$plugin_options .= '<option value="'.ROOT.'plugins/'.$plugin.'">'.$plugin.'</option>';
+			}
+		}
+		
 		
 		// Get current branch, replace tools into output
 		$status = shell_exec('/usr/bin/git status');
@@ -258,7 +271,6 @@ class git extends app
 		//chdir(ROOT.$type[intval($_POST['type'])]);
 		
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git remote add "'.escapeshellcmd($_POST['title']).'" "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
-		
 		redirect302();
 		
 	/*	echo '<span class="git_msg">';
@@ -564,7 +576,7 @@ Commits:
 	
 	public function quickstatus()
 	{
-		if(preg_match('/(apps|skins)\/([^\/]+)/', $_SESSION['git_path'], $match))
+		if(preg_match('/(apps|skins|plugins)\/([^\/]+)/', $_SESSION['git_path'], $match))
 			$repo = $match[1].'/'.$match[2];
 		else 
 			$repo = 'Littlefoot';
@@ -574,6 +586,6 @@ Commits:
 		
 		$modified = preg_match('/(^|\n) M /',$status,$match) ? ' *uncommited changes*' : '';
 		
-		return $repo.' / '.$branch[1].$modified;
+		return $repo.' :: '.$branch[1].$modified;
 	}
 }
