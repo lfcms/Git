@@ -26,7 +26,7 @@
 <div id="git_branches">
 	<h3>Branches</h3>
 	<form action="%appurl%create" method="post">
-		Create a new branch: <input type="text" name="newbranch" placeholder="New branch name"/> 
+		Create a new branch (/[A-Za-z0-9_]+/): <input type="text" name="newbranch" placeholder="New branch name"/> 
 		<input type="submit" value="Create" />
 	</form>
 	<?php
@@ -54,7 +54,7 @@
 					<form action="%appurl%commit" method="post">
 						<strong><?=$parts[2];?></strong> 
 						<input type="text" name="commit_text" placeholder="Commit text"/> 
-						<input type="submit" value="Commit" /><?=$pull;?>
+						<input type="submit" value="Commit" /><!-- <?=$pull;?> -->
 						<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span></form>
 						<div class="git_current_tools"><?=$update;?></div>
 				<?php

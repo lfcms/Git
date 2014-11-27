@@ -306,7 +306,6 @@ class git extends app
 	public function remotes($vars)
 	{
 		if(isset($vars[1]) && $vars[1] == 'master') return 'nope';
-		if(isset($vars[1]) && $vars[1] == 'master') return 'nope';
 		
 		/*$ini = preg_replace('/\s"([^"]+)"/', '$1', file_get_contents($this->path.'/.git/config'));
 		
@@ -561,5 +560,20 @@ Commits:
 		redirect302();
 		
 		//$this->main($vars);
+	}
+	
+	public function quickstatus()
+	{
+		if(preg_match('/(apps|skins)\/([^\/]+)/', $_SESSION['git_path'], $match))
+			$repo = $match[1].'/'.$match[2];
+		else 
+			$repo = 'Littlefoot';
+		
+		$status = shell_exec('/usr/bin/git status -b --porcelain');
+		preg_match('/##\s(.*)/', $status, $branch);
+		
+		$modified = preg_match('/(^|\n) M /',$status,$match) ? ' *uncommited changes*' : '';
+		
+		return $repo.' / '.$branch[1].$modified;
 	}
 }
