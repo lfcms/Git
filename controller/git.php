@@ -150,7 +150,7 @@ class git extends app
 		chdir($this->path);
 		// Git Diff		
 		
-		$diff = '<a href="#" class="modified_showdiff">Hide/Show Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
+		$diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
 		</div>';
 		
 		
