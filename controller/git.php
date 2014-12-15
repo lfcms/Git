@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="%relbase%lf/apps/git/git.css" />
+<link rel="stylesheet" href="<?=$this->lf->relbase;?>lf/apps/git/git.css" />
 <?php
 
 /**
@@ -148,10 +148,19 @@ class git extends app
 		
 		
 		chdir($this->path);
-		// Git Diff		
+		// Git
+
+		if($current == 'development')
+			$against = 'master';
+		else
+			$against = 'development';
 		
-		$diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a><div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).'
-		</div>';
+		$branchdiff = '
+			<div class="modified_diff_header">Diff '.$against.'..'.$current.'</div>'.shell_exec('/usr/bin/git diff --name-status '.$against.'..'.$current.' 2>&1');
+		
+		$diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a>
+		<div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
+		$branchdiff.'</div>';
 		
 		
 		
@@ -224,14 +233,18 @@ class git extends app
 				unset($replace);
 				switch($operation)
 				{
-					case 'A':
-						$replace = '(<a href="%appurl%reset?file='.$file.'">Reset</a>) Staged to add: '.$file;
-						break;
 					case 'UU':
 						$replace = '(<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>, <a '.jsprompt('Are you sure?').' href="%appurl%add?file='.$file.'">Mark Resolved</a>) CONFLICT!  '.$file;
 						break;
 					case 'M':
 						$replace = '<!-- , <a href="">stage</a> --> (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) modified: '.$file;
+						break;
+					case 'A':
+						$replace = '(<a href="%appurl%reset?file='.$file.'">Reset</a>) Staged to add: '.$file;
+						break;
+					case 'D':
+						$replace = '(<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) Deleted: '.$file;
+						break;
 						break;
 					case '??':
 						$replace = '(<a href="%appurl%add?file='.$file.'">Add</a>) Untracked: '.$file;
@@ -288,10 +301,10 @@ class git extends app
 				$cmd = 'push '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']);
 				break;
 			case 'checkout':
-				$cmd = 'checkout '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				$cmd = 'checkout '.escapeshellarg($_POST['branch']).' '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
 				break;
 			case '-b':
-				$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				$cmd = 'checkout -b '.escapeshellarg($_POST['branch']).' '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
 				break;
 				
 			/* Branch Ops */
