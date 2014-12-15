@@ -49,5 +49,7 @@ echo '<form action="%appurl%gitclone" id="git_add_repo_form" method="post">
 		
 		Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
 		
+		Rename: <input type="text" name="rename" placeholder="blog" />
+		
 		<input type="submit" value="Clone" />
 </form>'; ?>
