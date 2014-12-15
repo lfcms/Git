@@ -1,6 +1,16 @@
 <link rel="stylesheet" href="%relbase%lf/apps/git/git.css" />
 <?php
 
+/**
+ * Git
+ * 
+ * Sync local branch database - git fetch origin -p
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 class git extends app 
 {
 	private $path;
@@ -117,11 +127,6 @@ class git extends app
 			? ''//'<a href="%appurl%push">Push</a>' 
 			: '<a '.jsprompt('Are you sure you want to merge ['.$current.'] this into [master]?').' href="%appurl%merge/'.$current.'" title="This will merge the current branch with master.">Merge</a> | <a title="Rebase if you want updates from master to apply to your branch" href="%appurl%rebase/">Rebase'.$continue.'</a>
 			
-			<form style="display: inline" method="post" action="%appurl%pullrequest/'.$current.'">
-					<input type="text" name="ticketid" placeholder="Ticket ID" />
-					<input type="submit" value="Submit pull request" />
-				</form>
-			
 			';
 		
 		$branches = shell_exec('/usr/bin/git for-each-ref --sort=-committerdate refs/heads/');
@@ -174,10 +179,34 @@ class git extends app
 		
 		
 		echo $diff;
-				
+		
+		
 		
 		// Better Status
 		$status = shell_exec('/usr/bin/git status -b --porcelain');
+		
+		if(preg_match_all('/(?:^|\n\s?)(M|\?\?|D)\s([^\n]+)/', $status, $match))
+		{
+			for($i = 0; $i < count($match[0]); $i++)
+			{
+				$full = $match[0][$i];
+				$operation = $match[1][$i];
+				$file = $match[2][$i];
+				
+				unset($replace);
+				switch($operation)
+				{
+					case 'M':
+						$replace = '(<a href="">undo</a>, <a href="">stage</a>) modified: '.$file;
+						break;
+				}
+				
+				if(isset($replace))
+					$status = str_replace($operation.' '.$file, $replace, $status);
+			}
+		}
+		
+		
 		
 		echo '<h3>Better Status</h3>';
 		echo nl2br($status);
@@ -185,6 +214,18 @@ class git extends app
 		
 		
 		
+		$tree = shell_exec('git log --all --graph --pretty=tformat:"%x1b%h%x09%x1b%d%x1b%x20%s%x20%x1b[%an]%x1b" | grep " ("');
+		
+		echo '<h3>Branch Tree</h3>';
+		echo nl2br($tree);
+		
+	}
+	
+	public function stash($args)
+	{
+		echo '<pre>';
+		var_dump($args);
+		echo '</pre>';
 	}
 	
 	/*public function delete($args)
@@ -249,7 +290,10 @@ class git extends app
 		
 		chdir(ROOT.$type[intval($_POST['type'])]);
 		
-		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1')), 0, -1);
+		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" '.escapeshellcmd($_POST['rename']).' 2>&1')), 0, -1);
+		
+		//echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" '.escapeshellcmd($_POST['rename']);
+		//echo $_SESSION['git_msg'];
 		
 		redirect302();
 		
@@ -259,7 +303,7 @@ class git extends app
 		
 		$this->main($vars);*/
 	}
-	
+	 
 	public function addremotes($args)
 	{
 		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
@@ -493,7 +537,7 @@ class git extends app
 		$this->main($vars);*/
 	}
 	
-	public function pullrequest($vars)
+	/*public function pullrequest($vars)
 	{
 		$out = shell_exec('/usr/bin/git diff --name-only master '.escapeshellarg($vars[1]).' 2>&1'); 
 		$out = substr($out, 0, -1);
@@ -514,11 +558,7 @@ Modified files (master -> '.$vars[1].'):
 Commits:
 '.$out2;
 		
-		/*echo '<span class="git_msg">
-			Pull Request submitted<br /><br />
-			Modified files (master -> '.$vars[1].'):<br />';
-		echo nl2br(htmlentities($out));
-		echo '</span>';*/
+		
 		
 		$ticket = $vars[1];
 		if(preg_match('/\d+/', $vars[1], $match))
@@ -536,10 +576,97 @@ Commits:
 		$_SESSION['git_msg'] = $msg;
 		
 		redirect302();
+	}*/
+	
+	public function identity($args)
+	{
+		$user = shell_exec('/usr/bin/git config --local user.email "joe@bioshazard.com"');
+		include ROOT.'apps/git/view/git.identity.php';
 	}
 	
-	public function pushpull($vars)
+	public function gitop($vars)
 	{
+		$_SESSION['git_msg'] = '';
+		
+		if(!preg_match(
+			'/^(fetch|-p|pull|\-\-rebase|push|checkout|\-b|Stash|List|Branch|Apply|\-\-index)$/', 
+			$_POST['operation'], 
+			$match))
+		{
+			$_SESSION['git_msg'] = 'Bad Request';
+			redirect302();
+		}
+		
+		switch($match[1])
+		{
+			/* Remote Ops */
+			case 'fetch':
+				$cmd = 'fetch '.escapeshellarg($_POST['remote']).' -v';
+				break;
+			case '-p':
+				$cmd = 'fetch -v -p '.escapeshellarg($_POST['remote']);
+				break;
+			case 'pull':
+				$cmd = 'pull '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']);
+				break;
+			case '--rebase':			
+				$cmd = 'pull --rebase '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']);
+				break;
+			case 'push':
+				$cmd = 'push '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']);
+				break;
+			case 'checkout':
+				$cmd = 'checkout '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				break;
+			case '-b':
+				$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				break;
+				
+			/* Branch Ops */
+			case 'Merge':
+				$cmd = 'merge '.escapeshellarg($_POST['branch']);
+				break;
+			case 'Rebase':
+				//$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				break;
+			case '--continue':
+				//$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				break;
+				
+			/* Stash Ops */
+			case 'Stash':
+				$cmd = 'stash';
+				break;
+			case 'List':
+				$cmd = 'stash list';
+				break;
+			case 'Branch':
+				$cmd = 'stash branch '.uniqid('stashtest');
+				break;
+			case 'Apply':			
+				$cmd = 'stash apply';
+				break;
+			case '--index':
+				$cmd = 'stash apply --index';
+				break;
+		}
+		
+		if(isset($cmd))
+			$_SESSION['git_msg'] = shell_exec('/usr/bin/git '.$cmd.' 2>&1');
+		
+		if($_SESSION['git_msg'] == '')
+			$_SESSION['git_msg'] = 'No output';
+		
+		redirect302();
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		if(!preg_match('/^(push|pull)$/', $_POST['direction'], $match)) return 'bad request';
 		
 		ob_start();
@@ -550,7 +677,7 @@ Commits:
 		}
 		else if($match[1] == 'pull')
 		{
-			echo nl2br(shell_exec('/usr/bin/git stash 2>&1'));
+			/*echo nl2br(shell_exec('/usr/bin/git stash 2>&1'));
 			
 			echo '/usr/bin/git '.$match[1].' '.escapeshellarg($_POST['remote']).' '.escapeshellarg($_POST['branch']).'<br />';
 			if($_POST['branch'] != 'master')
@@ -565,7 +692,9 @@ Commits:
 		
 			echo nl2br(shell_exec('/usr/bin/git checkout - 2>&1'));
 					
-			echo nl2br(shell_exec('/usr/bin/git stash pop 2>&1'));
+			echo nl2br(shell_exec('/usr/bin/git stash pop 2>&1'));*/
+			
+			
 		}
 		$_SESSION['git_msg'] = ob_get_clean();
 		

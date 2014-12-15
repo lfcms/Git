@@ -1,3 +1,15 @@
+<?php
+
+// print any message set before last call, then unset
+if(isset($_SESSION['git_msg']))
+{
+	echo '<span class="git_msg">';
+	echo nl2br($_SESSION['git_msg']);
+	echo '</span>';
+	unset($_SESSION['git_msg']);
+}
+
+?>
 <div id="git_tools">
 	<h3>Tools</h3>
 	<form action="%appurl%" method="post">
@@ -14,28 +26,44 @@
 		</select> 
 		<input type="submit" value="Change Repo" />
 	</form>
-	<form action="%appurl%pushpull" method="post">
-		<a href="%appurl%remotes">Remotes</a>: <select name="remote" id=""><?=$remotes;?></select> 
+	<form action="%appurl%gitop" method="post">
+		<a href="%appurl%remotes">Remotes</a>: 
+			<select name="remote" id="">
+				<?=$remotes;?>
+			</select> 
+			<input type="submit" name="operation" value="fetch" />
+			<input type="submit" name="operation" value="-p" />
 			/ <input type="text" name="branch" placeholder="master" />
-			<input type="submit" name="direction" value="pull" />
-			<input type="submit" name="direction" value="push" /> 
+			<input type="submit" name="operation" value="pull" />
+			<input type="submit" name="operation" value="--rebase" /> 
+			<input type="submit" name="operation" value="push" />
+			<input type="submit" name="operation" value="checkout" /> 
+			<input type="submit" name="operation" value="-b" /> 
 	</form>
 	<form action="%appurl%tag" method="post">
 		<a href="%appurl%tags">Tag</a>: <input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
 	</form>
+	<a href="%appurl%identity">Configure Identity</a>
 </div>
 <div id="git_branches">
-	<h3>Branches</h3>
+	<h3>Local Branches</h3>
 	<form action="%appurl%create" method="post">
 		Create a new branch (/[A-Za-z0-9_]+/): <input type="text" name="newbranch" placeholder="New branch name"/> 
 		<input type="submit" value="Create" />
 	</form>
 	<?php
 		
+		include ROOT.'apps/git/model/git.branch.php';
 		
-		include ROOT.'apps/git/model/git.branch.php';		
-		
-		
+		$branch_options = '';
+		foreach($branches as $branch)
+		{
+			$parts = explode('/', $branch); 
+			$branch = $parts[2];
+			$hash = substr($branch, 0, 7);
+			
+			$branch_options .= '<option value="'.$branch.'">'.$branch.'</option>';
+		}
 		
 		ob_start(); // capture branch <li>
 		foreach($branches as $branch)
@@ -51,13 +79,36 @@
 			
 			if($parts[2] == $current) 
 			{
-				?><li class="git_current_branch">
+				?>
+				<li class="git_current_branch">
 					<form action="%appurl%commit" method="post">
 						<strong><?=$parts[2];?></strong> 
 						<input type="text" name="commit_text" placeholder="Commit text"/> 
 						<input type="submit" value="Commit" /><!-- <?=$pull;?> -->
-						<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span></form>
-						<div class="git_current_tools"><?=$update;?></div>
+						<span style="float: right">(<a href="%appurl%history">view history</a>) <?=$branch;?></span>
+					</form>
+					<div class="git_current_tools">
+						<!-- a<?=$update;?> -->
+						<form action="%appurl%gitop/<?=$parts[2];?>" method="post">
+							<select name="branch" id="">
+								<option value="">-- Select Branch --</option>
+								<?=$branch_options;?>
+							</select>
+							<input type="submit" name="operation" value="Merge" />
+							<input type="submit" name="operation" value="Rebase" />
+							<input type="submit" name="operation" value="--continue" />
+						</form>
+					</div>
+					<div>
+						Stash Ops: <form action="%appurl%gitop" method="post">
+							<input type="submit" name="operation" value="Stash" />
+							<input type="submit" name="operation" value="List" />
+							<input type="submit" name="operation" value="Branch" />
+							<input type="submit" name="operation" value="Apply" />
+							<input type="submit" name="operation" value="--index" />
+						</form>
+					</div>
+				</li>
 				<?php
 			}
 			else
@@ -66,18 +117,17 @@
 				if($parts[2] != 'master') 
 					$delete = ' [<a '.jsprompt('Are you sure you want to delete ['.$parts[2].']?').'  href="%appurl%rm/'.$parts[2].'">Delete</a>]';
 				echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span>';
+				
 			}
 		}
 		
 		$branchesOutput = ob_get_clean();
 		
-		?>
-		
-		
-		
+	?>
 	<ul>
 		<?php if($current == NULL): ?>
-		<li><form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
+		<li>
+			<form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
 		<?php endif;
 		
 		/*function recurseBranches($parent, $boutput, $resolve)
@@ -103,21 +153,15 @@
 		echo $branchesOutput;
 		
 		?>
-	</li></ul>
+		</li>
+	</ul>
 </div>
 
 <h3>Status</h3>
 <?php 
 echo nl2br($status);
 
-// print any message set before last call, then unset
-if(isset($_SESSION['git_msg']))
-{
-	echo '<span class="git_msg">';
-	echo nl2br($_SESSION['git_msg']);
-	echo '</span>';
-	unset($_SESSION['git_msg']);
-}?>
+?>
 
 <script type="text/javascript">
 	$(document).ready(function(){

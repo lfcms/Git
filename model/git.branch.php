@@ -1,5 +1,5 @@
 <?php
-
+/*
 $treegraph = shell_exec('/usr/bin/git log --all --graph --pretty=tformat:"%d" | grep -B1000 "(master)"');
 $treegraph = explode("\n", $treegraph, -1);
 
@@ -97,5 +97,5 @@ if(isset($children))
 		
 		$resolve['master'][] = $child;
 	}
-
+*/
 ?>
