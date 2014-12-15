@@ -28,11 +28,11 @@ if(isset($_SESSION['git_msg']))
 	</form>
 	<form action="%appurl%gitop" method="post">
 		<a href="%appurl%remotes">Remotes</a>: 
+			<input type="submit" name="operation" value="fetch" />
+			<input type="submit" name="operation" value="-p" />
 			<select name="remote" id="">
 				<?=$remotes;?>
 			</select> 
-			<input type="submit" name="operation" value="fetch" />
-			<input type="submit" name="operation" value="-p" />
 			/ <input type="text" name="branch" placeholder="master" />
 			<input type="submit" name="operation" value="pull" />
 			<input type="submit" name="operation" value="--rebase" /> 
@@ -124,7 +124,7 @@ if(isset($_SESSION['git_msg']))
 		$branchesOutput = ob_get_clean();
 		
 	?>
-	<ul>
+	<ul id="local_branches">
 		<?php if($current == NULL): ?>
 		<li>
 			<form action="%appurl%commit" method="post"><strong>Not currently on any branch</strong> <input type="text" name="commit_text" placeholder="Commit text"/> <input type="submit" value="Commit" /><?=$pull;?> <span><?=$branch;?><span></form></li>
@@ -157,9 +157,10 @@ if(isset($_SESSION['git_msg']))
 	</ul>
 </div>
 
-<h3>Status</h3>
 <?php 
-echo nl2br($status);
+/*
+<h3>Status</h3>
+echo nl2br($status);*/
 
 ?>
 

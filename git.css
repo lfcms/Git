@@ -43,9 +43,12 @@
 	}
 	
 .modified_diff { background: #EEE; white-space: pre; }
-.modified_diff_from { background: #FDD; white-space: pre; }
-.modified_diff_to { background: #DFD; white-space: pre; }
+.modified_diff_header { background: #000; color: #DDD; white-space: pre; padding: 5px; display: block; }
+.modified_diff_from { background: #FDD; white-space: pre; clear: both; display: block; }
+.modified_diff_to { background: #DFD; white-space: pre; display:block; clear: both; }
 
+#local_branches { border: 1px solid #000; border-top: none; padding: 0px !important; margin: 0px important; }
+#local_branches li { padding: 5px !important; margin: 0px !important; }
 
 #app-dashboard ul { padding-left: 10px; }
 #app-dashboard ul li { border-top: 1px solid #000; margin-top: 10px;  }
