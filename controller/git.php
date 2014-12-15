@@ -245,7 +245,8 @@ class git extends app
 		
 		$tree = shell_exec('git log --all --graph --pretty=tformat:"%x1b%h%x09%x1b%d%x1b%x20%s%x20%x1b[%an]%x1b" | grep " ("');
 		
-		echo '<h3>Better Status</h3>';
+		echo '<h3>Status</h3>';
+		$status = preg_replace('/^##\s([^\r\n]+)/', 'Current Branch: <strong>$1</strong>', $status);
 		echo nl2br($status);
 		
 		echo '<h3>Branch Tree</h3>';
