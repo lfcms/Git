@@ -168,10 +168,9 @@ class git extends app
 		
 		$diff = preg_replace('/diff \-\-git ([^\n]+)/', '<span class="modified_diff_header">$0</span>', $diff);
 		
-		$diff = preg_replace('/(^|\n)(\+[^\n]+)/', '<span class="modified_diff_to">$2</span>', $diff);
+		$diff = preg_replace('/(^|\n)(\+[^\n]*)\n/', '<span class="modified_diff_to">$2</span>', $diff);
 		
-		$diff = preg_replace('/(^|\n)(-[^\n]+)/', '<span class="modified_diff_from">$2</span>', $diff);
-		
+		$diff = preg_replace('/(^|\n)(-[^\n]*)\n/', '<span class="modified_diff_from">$2</span>', $diff);
 		
 		
 		//preg_match_all('/(^|\n)(diff --git a\/)(.*? b).*?(diff --git[^\n]+)?', $diff, $matches);
@@ -220,7 +219,7 @@ class git extends app
 		// Better Status
 		$status = shell_exec('/usr/bin/git status -b --porcelain');
 		
-		if(preg_match_all('/(^|\n\s?)(A|M|UU|\?\?|D)\s+([^\n]+)/', $status, $match))
+		if(preg_match_all('/(^|\n\s?)(A|A?M|UU|\?\?|D)\s+([^\n]+)/', $status, $match))
 		{
 			for($i = 0; $i < count($match[0]); $i++)
 			{
@@ -229,25 +228,27 @@ class git extends app
 				$operation = $match[2][$i];
 				$file = $match[3][$i];
 				
-				
 				unset($replace);
 				switch($operation)
 				{
+					case 'AM':
+						$replace = 'AM (<a '.jsprompt('Are you sure?').' href="%appurl%reset?file='.$file.'">Reset</a>) '.$file.' (modified since staged)';
+						break;
+					// lol UUMAD??
 					case 'UU':
-						$replace = '(<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>, <a '.jsprompt('Are you sure?').' href="%appurl%add?file='.$file.'">Mark Resolved</a>) CONFLICT!  '.$file;
+						$replace = 'UU (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>, <a '.jsprompt('Are you sure?').' href="%appurl%add?file='.$file.'">Mark Resolved</a>) '.$file.' CONFLICT!';
 						break;
 					case 'M':
-						$replace = '<!-- , <a href="">stage</a> --> (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) modified: '.$file;
+						$replace = 'M <!-- , <a href="">stage</a> --> (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) '.$file.' (modified)';
 						break;
 					case 'A':
-						$replace = '(<a href="%appurl%reset?file='.$file.'">Reset</a>) Staged to add: '.$file;
+						$replace = 'A (<a '.jsprompt('Are you sure?').' href="%appurl%reset?file='.$file.'">Reset</a>) '.$file.' (staged to add)';
 						break;
 					case 'D':
-						$replace = '(<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) Deleted: '.$file;
-						break;
+						$replace = 'D (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) Deleted: '.$file;
 						break;
 					case '??':
-						$replace = '(<a href="%appurl%add?file='.$file.'">Add</a>) Untracked: '.$file;
+						$replace = '?? (<a href="%appurl%add?file='.$file.'">Add</a>) Untracked: '.$file;
 						break;
 				}
 				
@@ -312,10 +313,10 @@ class git extends app
 				$cmd = 'merge '.escapeshellarg($_POST['branch']);
 				break;
 			case 'Rebase':
-				//$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				$cmd = 'rebase '.escapeshellarg($_POST['branch']);
 				break;
 			case '--continue':
-				//$cmd = 'checkout -b '.escapeshellarg($_POST['remote'].'/'.$_POST['branch']);
+				$cmd = 'rebase --continue';
 				break;
 				
 			/* Stash Ops */

@@ -173,6 +173,6 @@ echo nl2br($status);*/
 				return false;
 			}
 		);
-		$('.modified_showdiff').next().toggle();
+		//$('.modified_showdiff').next().toggle();
 	});
 </script>

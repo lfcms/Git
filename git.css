@@ -45,7 +45,7 @@
 	padding: 3px 0;
 }
 	
-.modified_diff { background: #EEE; white-space: pre; border: #000 solid 1px !important; }
+.modified_diff { width: 800px; word-wrap: break-word; background: #EEE; white-space: pre; border: #000 solid 1px !important; }
 .modified_diff_header { background: #000; color: #DDD; white-space: pre; padding: 5px; display: block; }
 .modified_diff_from { background: #FDD; white-space: pre; clear: both; display: block; }
 .modified_diff_to { background: #DFD; white-space: pre; display:block; clear: both; }
