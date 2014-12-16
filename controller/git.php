@@ -155,8 +155,7 @@ class git extends app
 		else
 			$against = 'development';
 		
-		$branchdiff = '
-			<div class="modified_diff_header">Diff '.$against.'..'.$current.'</div>'.shell_exec('/usr/bin/git diff --name-status '.$against.'..'.$current.' 2>&1');
+		$branchdiff = '<div class="modified_diff_header">Diff '.$against.'..'.$current.'</div>'.shell_exec('/usr/bin/git diff --name-status '.$against.'..'.$current.' 2>&1');
 		
 		$diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a>
 		<div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
