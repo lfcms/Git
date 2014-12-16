@@ -149,8 +149,9 @@ class git extends app
 		
 		chdir($this->path);
 		// Git
-
-		if($current == 'development')
+		if($current == 'master')
+			$against = 'origin/master';
+		else if($current == 'development')
 			$against = 'master';
 		else
 			$against = 'development';
@@ -163,13 +164,15 @@ class git extends app
 		
 		
 		
+		/* Red/Green diff colors */
+		$diff = preg_replace('/(^|\n)(diff \-\-git [^\n]+)/', '$1<span class="modified_diff_header">$2</span>', $diff);
 		
+		$diff = preg_replace('/(^|\n)(\+[^\n]*)/', '$1<span class="modified_diff_to">$2</span>', $diff);
 		
-		$diff = preg_replace('/diff \-\-git ([^\n]+)/', '<span class="modified_diff_header">$0</span>', $diff);
+		$diff = preg_replace('/(^|\n)(-[^\n]*)/', '$1<span class="modified_diff_from">$2</span>', $diff);
 		
-		$diff = preg_replace('/(^|\n)(\+[^\n]*)\n/', '<span class="modified_diff_to">$2</span>', $diff);
-		
-		$diff = preg_replace('/(^|\n)(-[^\n]*)\n/', '<span class="modified_diff_from">$2</span>', $diff);
+		$diff = preg_replace('/\n<span/', '<span', $diff);
+		$diff = preg_replace('/<\/span>\n/', '</span>', $diff);
 		
 		
 		//preg_match_all('/(^|\n)(diff --git a\/)(.*? b).*?(diff --git[^\n]+)?', $diff, $matches);

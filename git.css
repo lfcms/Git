@@ -47,8 +47,8 @@
 	
 .modified_diff { width: 800px; word-wrap: break-word; background: #EEE; white-space: pre; border: #000 solid 1px !important; }
 .modified_diff_header { background: #000; color: #DDD; white-space: pre; padding: 5px; display: block; }
-.modified_diff_from { background: #FDD; white-space: pre; clear: both; display: block; }
-.modified_diff_to { background: #DFD; white-space: pre; display:block; clear: both; }
+.modified_diff_from { background: #FDD; /*white-space: pre;*/ clear: both; display: block; }
+.modified_diff_to { background: #DFD; /*white-space: pre;*/ display:block; clear: both; }
 
 #local_branches { border: 1px solid #000; border-top: none; padding: 0px !important; margin: 0px important; }
 #local_branches li { padding: 5px !important; margin: 0px !important; }
