@@ -404,9 +404,12 @@ class git extends app
 	{
 		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
 		
-		$type = array('apps', 'skins');
+		$type = array('apps', 'skins', 'plugins');
 		
 		//echo '/usr/bin/git clone "'.escapeshellcmd($_POST['url']).'" 2>&1';
+		
+		if(in_array(intval($_POST['type']), $type))
+			return 'Bad request';
 		
 		chdir(ROOT.$type[intval($_POST['type'])]);
 		

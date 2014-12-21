@@ -45,6 +45,7 @@ echo '<form action="%appurl%gitclone" id="git_add_repo_form" method="post">
 	Type: <select name="type" id="">
 			<option value="0">App</option>
 			<option value="1">Skin</option>
+			<option value="2">Plugin</option>
 		</select>
 		
 		Clone URL: <input size="40" type="text" name="url" placeholder="ssh://user@localhost/..." />
