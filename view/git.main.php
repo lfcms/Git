@@ -3,9 +3,9 @@
 // print any message set before last call, then unset
 if(isset($_SESSION['git_msg']))
 {
-	echo '<span class="git_msg">';
-	echo nl2br($_SESSION['git_msg']);
-	echo '</span>';
+	echo '<pre class="button blue light">';
+	echo $_SESSION['git_msg'];
+	echo '</pre>';
 	unset($_SESSION['git_msg']);
 }
 
