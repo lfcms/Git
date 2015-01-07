@@ -1,9 +1,9 @@
-#app-dashboard fieldset { margin-top: 10px; }
-#app-dashboard ul { list-style: none; margin: 0; /*margin-top: 10px;*/ padding: 0; }
+/*#app-dashboard fieldset { margin-top: 10px; }
+#app-dashboard ul { list-style: none; margin: 0; padding: 0; }
 #app-dashboard ul li { padding: 10px; }
-#app-dashboard h3 { margin-top: 10px; color: #00AA63; }
+#app-dashboard h3 { margin-top: 10px; color: #00AA63; }*/
 /*#app-dashboard h4 { margin-top: 10px; }*/
-#app-dashboard .git_msg {   
+/*#app-dashboard .git_msg {   
 	background: #AAAADD;
 	border: medium solid #0000FF;
 	color: #3333CC;
@@ -21,6 +21,14 @@
 	padding: 10px; }
 	
 	
+
+.dashboard_manage {
+	padding-top: 0px;
+}
+#git_tools form {
+	padding: 3px 0;
+}*/
+
 .git_current_branch {
 	background: #abc;
 	padding: 0 5px;
@@ -34,17 +42,8 @@
 }
 .git_current_tools {
 	width: 100%;
-} 
-.dashboard_manage {
-	padding-top: 0px;
 }
-#git_tools, #git_branches {
-	/*margin-bottom: 20px;*/
-}
-#git_tools form {
-	padding: 3px 0;
-}
-	
+
 .modified_diff { font-family: monospace; width: 800px; word-wrap: break-word; background: #EEE; white-space: pre; border: #000 solid 1px !important; }
 .modified_diff_header { background: #000; color: #DDD; white-space: pre; padding: 5px; display: block; }
 .modified_diff_from { background: #FDD; /*white-space: pre;*/ clear: both; display: block; }
@@ -52,6 +51,6 @@
 
 #local_branches { border: 1px solid #000; border-top: none; padding: 0px !important; margin: 0px important; }
 #local_branches li { padding: 5px !important; margin: 0px !important; }
-
+/*
 #app-dashboard ul { padding-left: 10px; }
-#app-dashboard ul li { border-top: 1px solid #000; margin-top: 10px;  }
+#app-dashboard ul li { border-top: 1px solid #000; margin-top: 10px;  }*/
