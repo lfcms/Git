@@ -29,7 +29,7 @@
 	padding: 3px 0;
 }*/
 
-.git_current_branch {
+/*.git_current_branch {
 	background: #abc;
 	padding: 0 5px;
 } 
@@ -42,7 +42,7 @@
 }
 .git_current_tools {
 	width: 100%;
-}
+}*/
 
 .modified_diff { font-family: monospace; width: 800px; word-wrap: break-word; background: #EEE; white-space: pre; border: #000 solid 1px !important; }
 .modified_diff_header { background: #000; color: #DDD; white-space: pre; padding: 5px; display: block; }

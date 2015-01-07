@@ -120,7 +120,7 @@ if(isset($_SESSION['git_msg']))
 
 
 
-<ul class="vlist">
+<ul class="efvlist">
 	<?php if($current == NULL): ?>
 		<li>
 			<form action="%appurl%commit" method="post">
@@ -162,10 +162,10 @@ if(isset($_SESSION['git_msg']))
 			if($parts[2] == $current) 
 			{
 				?>
-				<li class="git_current_branch">
+				<li class="active">
 					<form action="%appurl%commit" method="post">
 						<div class="row">
-							<div class="col-2"><strong class="label red"><?=$parts[2];?></strong></div>
+							<div class="col-2"><strong class="label green_b"><?=$parts[2];?></strong></div>
 							<div class="col-5"><input type="text" name="commit_text" placeholder="Commit text"/></div>
 							<div class="col-2"><input type="submit" value="Commit" /></div>
 							<div class="col-3"><a class="label" href="%appurl%history">view history (<?=$branch;?>)</a></div>
@@ -229,24 +229,6 @@ if(isset($_SESSION['git_msg']))
 
 <h1>STALE</h1>
 
-
-<div id="git_branches">
-	<h3>Local Branches</h3>
-	<form action="%appurl%create" method="post">
-		Create a new branch (/[A-Za-z0-9_]+/): <input type="text" name="newbranch" placeholder="New branch name"/> 
-		<input type="submit" value="Create" />
-	</form>
-	
-	
-</div>
-
-<?php 
-/*
-<h3>Status</h3>
-echo nl2br($status);*/
-
-?>
-
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('.modified_showdiff').click(
@@ -262,24 +244,8 @@ echo nl2br($status);*/
 
 
 
-
-
-
-
-
 <?php
 
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		chdir($this->path);
