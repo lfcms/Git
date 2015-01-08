@@ -3,7 +3,7 @@
 // print any message set before last call, then unset
 if(isset($_SESSION['git_msg']))
 {
-	echo '<pre class="label green_b">';
+	echo '<pre class="rounded notice">';
 	echo $_SESSION['git_msg'];
 	echo '</pre>';
 	unset($_SESSION['git_msg']);
