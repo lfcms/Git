@@ -247,8 +247,6 @@ $diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a>
 <div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
 $branchdiff.'</div>';
 
-
-
 /* Red/Green diff colors */
 $diff = preg_replace('/(^|\n)(diff \-\-git [^\n]+)/', '$1<span class="modified_diff_header">$2</span>', $diff);
 
