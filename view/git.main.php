@@ -12,100 +12,7 @@ if(isset($_SESSION['git_msg']))
 ?>
 
 <div class="row">
-	<div class="col-6">
-		<h3>Repositories</h3>
-		<form action="%appurl%" method="post">
-			<div class="row">
-				<div class="col-2">
-					<a class="button blue" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
-				</div>
-				<div class="col-6">
-					<select name="newgitpath" />
-						<?php if(is_dir(ROOT.'../.git')) : ?>
-						<optgroup label="System">
-							<option value="<?=ROOT;?>..">LittlefootCMS</option>
-						</optgroup>
-						<?php endif; ?>
-						<optgroup label="Apps"><?=$app_options;?></optgroup>
-						<optgroup label="Skins"><?=$skin_options;?></optgroup>
-						<optgroup label="Plugins"><?=$plugin_options;?></optgroup>
-					</select> 
-				</div>
-				<div class="col-4">
-					<button class="green" type="submit">Change Repo</button>
-				</div>
-			</div>
-		</form>
-
-
-
-		<h3>Remotes</h3>
-		<form action="%appurl%gitop" method="post">
-			<div class="row">
-				<div class="col-2">
-					<a class="blue button" href="%appurl%remotes">View Remotes</a>
-				</div>
-				<div class="col-5">
-					<select name="remote" id="">
-						<?=$remotes;?>
-					</select>
-				</div>
-				<div class="col-5">
-					<input type="text" name="branch" placeholder="master" />
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-1">
-					<span class="label">Ops:</span>
-				</div>
-				<div class="col-1">
-					<input class="green" type="submit" name="operation" value="fetch" />
-				</div>
-				<div class="col-1">
-					<input type="submit" name="operation" value="-p" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="pull" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="--rebase" /> 
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="push" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="checkout" /> 
-				</div>
-				<div class="col-1">
-					<input type="submit" name="operation" value="-b" /> 
-				</div>
-			</div>
-		</form>
-
-			
-			
-			
-		<h3>Tags</h3>
-
-		<div class="row">
-			<div class="col-2">
-				<a class="button" href="%appurl%tags">View Tags</a>
-			</div>
-			<div class="col-6">
-				<form action="%appurl%tag" method="post">
-					<input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
-				</form>
-			</div>
-			<div class="col-4">
-				<button class="green">Tag Commit</button>
-			</div>
-		</div>
-			
-		<a href="%appurl%identity">Configure Identity</a>
-
-	</div>
-	<div class="col-6">
+	<div class="col-8">
 		<h3>Local Branches</h3>
 		<form action="%appurl%create" method="post">
 			<div class="row">
@@ -227,7 +134,106 @@ if(isset($_SESSION['git_msg']))
 			?>
 		</ul>
 	</div>
+	<div class="col-4">
+	
+		<h3>Repositories</h3>
+		
+		<form action="%appurl%" method="post">
+			<div class="row">
+				<div class="col-12">
+					<select name="newgitpath" />
+						<?php if(is_dir(ROOT.'../.git')) : ?>
+						<optgroup label="System">
+							<option value="<?=ROOT;?>..">LittlefootCMS</option>
+						</optgroup>
+						<?php endif; ?>
+						<optgroup label="Apps"><?=$app_options;?></optgroup>
+						<optgroup label="Skins"><?=$skin_options;?></optgroup>
+						<optgroup label="Plugins"><?=$plugin_options;?></optgroup>
+					</select> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<a class="button blue" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
+				</div>
+				<div class="col-6">
+					<button class="green" type="submit">Change Repo</button>
+				</div>
+			</div>
+		</form>
+		
+		<h3>Remotes</h3>
+		
+		<form action="%appurl%gitop" method="post">
+			<div class="row">
+				<div class="col-6">
+					<a class="blue button" href="%appurl%remotes">View Remotes</a>
+				</div>
+				<div class="col-6">
+					<select name="remote" id="">
+						<?=$remotes;?>
+					</select>
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<input type="text" name="branch" placeholder="master" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<input type="submit" name="operation" value="push" />
+				</div>
+				<div class="col-3">
+					<input type="submit" name="operation" value="pull" />
+				</div>
+
+				<div class="col-3">
+					<input type="submit" name="operation" value="-p" />
+				</div>
+				<div class="col-3">
+					<input type="submit" name="operation" value="-b" /> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-4">
+					<input class="green" type="submit" name="operation" value="fetch" />
+				</div>
+				<div class="col-4">
+					<input type="submit" name="operation" value="checkout" /> 
+				</div>
+				<div class="col-4">
+					<input type="submit" name="operation" value="--rebase" /> 
+				</div>
+			</div>
+		</form>
+		
+		<h3>Tags</h3>
+
+		<div class="row">
+			<div class="col-12">
+				<form action="%appurl%tag" method="post">
+					<input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<a class="button" href="%appurl%tags">View Tags</a>
+			</div>
+
+			<div class="col-6">
+				<button class="green">Tag Commit</button>
+			</div>
+		</div>
+			
+		<a href="%appurl%identity">Configure Identity</a>
+
+	</div>
 </div>
+
 
 
 <?php
