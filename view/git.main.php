@@ -134,24 +134,16 @@ if(isset($_SESSION['git_msg']))
 			?>
 		</ul>
 		
-		<div class="row">
-			<div class="col-7">
-				<h3>Branch Tree</h3>
-				<?=$tree;?>
-			</div>
-			<div class="col-5">
-				<h3>Status</h3>
-				<?=$status;?>
-			</div>
-		</div>
+		<h4>Branch Tree</h4>
+		<?=$tree;?>
 		
-		<h3>Git Diff</h3>
+		<h4>Git Diff</h4>
 		<?=$diff;?>
 		
 	</div>
 	<div class="col-4">
-	
-		<h3>Repositories</h3>
+		
+		<h3>Repository</h3>
 		
 		<form action="%appurl%" method="post">
 			<div class="row">
@@ -177,8 +169,14 @@ if(isset($_SESSION['git_msg']))
 				</div>
 			</div>
 		</form>
+
+		<h4>Status</h4>
+		<?=$status;?>
 		
-		<h3>Remotes</h3>
+		<a <?=jsprompt();?> href="%appurl%deleteErrorLogs" class="martop red button">Delete error_log files</a>
+		
+		<h4>Remotes</h4>
+		
 		
 		<form action="%appurl%gitop" method="post">
 			<div class="row">
@@ -223,8 +221,7 @@ if(isset($_SESSION['git_msg']))
 			</div>
 		</form>
 		
-		<h3>Tags</h3>
-
+		<h4>Tags</h4>
 		<div class="row">
 			<div class="col-12">
 				<form action="%appurl%tag" method="post">
