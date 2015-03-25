@@ -25,6 +25,13 @@ class git extends app
 		chdir($this->path);
 	}
 	
+	public function deleteErrorLogs($args)
+	{
+		chdir(LF);
+		$_SESSION['git_msg'] = shell_exec('find -name error_log -delete 2>&1');
+		redirect302();
+	}
+	
 	public function main($vars)
 	{
 		include ROOT.'apps/git/model/git.main.php';
