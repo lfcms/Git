@@ -12,100 +12,7 @@ if(isset($_SESSION['git_msg']))
 ?>
 
 <div class="row">
-	<div class="col-6">
-		<h3>Repositories</h3>
-		<form action="%appurl%" method="post">
-			<div class="row">
-				<div class="col-2">
-					<a class="button blue" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
-				</div>
-				<div class="col-6">
-					<select name="newgitpath" />
-						<?php if(is_dir(ROOT.'../.git')) : ?>
-						<optgroup label="System">
-							<option value="<?=ROOT;?>..">LittlefootCMS</option>
-						</optgroup>
-						<?php endif; ?>
-						<optgroup label="Apps"><?=$app_options;?></optgroup>
-						<optgroup label="Skins"><?=$skin_options;?></optgroup>
-						<optgroup label="Plugins"><?=$plugin_options;?></optgroup>
-					</select> 
-				</div>
-				<div class="col-4">
-					<button class="green" type="submit">Change Repo</button>
-				</div>
-			</div>
-		</form>
-
-
-
-		<h3>Remotes</h3>
-		<form action="%appurl%gitop" method="post">
-			<div class="row">
-				<div class="col-2">
-					<a class="blue button" href="%appurl%remotes">View Remotes</a>
-				</div>
-				<div class="col-5">
-					<select name="remote" id="">
-						<?=$remotes;?>
-					</select>
-				</div>
-				<div class="col-5">
-					<input type="text" name="branch" placeholder="master" />
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-1">
-					<span class="label">Ops:</span>
-				</div>
-				<div class="col-1">
-					<input class="green" type="submit" name="operation" value="fetch" />
-				</div>
-				<div class="col-1">
-					<input type="submit" name="operation" value="-p" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="pull" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="--rebase" /> 
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="push" />
-				</div>
-				<div class="col-2">
-					<input type="submit" name="operation" value="checkout" /> 
-				</div>
-				<div class="col-1">
-					<input type="submit" name="operation" value="-b" /> 
-				</div>
-			</div>
-		</form>
-
-			
-			
-			
-		<h3>Tags</h3>
-
-		<div class="row">
-			<div class="col-2">
-				<a class="button" href="%appurl%tags">View Tags</a>
-			</div>
-			<div class="col-6">
-				<form action="%appurl%tag" method="post">
-					<input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
-				</form>
-			</div>
-			<div class="col-4">
-				<button class="green">Tag Commit</button>
-			</div>
-		</div>
-			
-		<a href="%appurl%identity">Configure Identity</a>
-
-	</div>
-	<div class="col-6">
+	<div class="col-8">
 		<h3>Local Branches</h3>
 		<form action="%appurl%create" method="post">
 			<div class="row">
@@ -186,7 +93,7 @@ if(isset($_SESSION['git_msg']))
 									</div>
 									<div class="col-2"><input type="submit" name="operation" value="Merge" /></div>
 									<div class="col-2"><input type="submit" name="operation" value="Rebase" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="--continue" /></div>
+									<div class="col-2"><input type="submit" class="green" name="operation" value="--continue" /></div>
 								</div>
 							</form>
 							
@@ -197,7 +104,7 @@ if(isset($_SESSION['git_msg']))
 									<div class="col-2"><input type="submit" name="operation" value="List" /></div>
 									<div class="col-2"><input type="submit" name="operation" value="Branch" /></div>
 									<div class="col-2"><input type="submit" name="operation" value="Apply" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="--index" /></div>
+									<div class="col-2"><input class="green" type="submit" name="operation" value="--index" /></div>
 								</div>
 							</form>
 						</li>
@@ -226,123 +133,117 @@ if(isset($_SESSION['git_msg']))
 				
 			?>
 		</ul>
+		
+		<h4>Branch Tree</h4>
+		<?=$tree;?>
+		
+		<h4>Git Diff</h4>
+		<?=$diff;?>
+		
+	</div>
+	<div class="col-4">
+		
+		<h3>Repository</h3>
+		
+		<form action="%appurl%" method="post">
+			<div class="row">
+				<div class="col-12">
+					<select name="newgitpath" />
+						<?php if(is_dir(ROOT.'../.git')) : ?>
+						<optgroup label="System">
+							<option value="<?=ROOT;?>..">LittlefootCMS</option>
+						</optgroup>
+						<?php endif; ?>
+						<optgroup label="Apps"><?=$app_options;?></optgroup>
+						<optgroup label="Skins"><?=$skin_options;?></optgroup>
+						<optgroup label="Plugins"><?=$plugin_options;?></optgroup>
+					</select> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<button class="green" type="submit">Change Repo</button>
+				</div>
+				<div class="col-6">
+					<a class="button blue" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
+				</div>
+			</div>
+		</form>
+
+		<h4>Status</h4>
+		<?=$status;?>
+		
+		<a <?=jsprompt();?> href="%appurl%deleteErrorLogs" class="martop red button">Delete error_log files</a>
+		
+		<h4>Remotes</h4>
+		
+		
+		<form action="%appurl%gitop" method="post">
+			<div class="row">
+				<div class="col-6">
+					<select name="remote" id="">
+						<?=$remotes;?>
+					</select>
+				</div>
+				<div class="col-6">
+					<a class="blue button" href="%appurl%remotes">View Remotes</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<input type="text" name="branch" placeholder="master" value="<?=$current;?>" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<input type="submit" name="operation" value="fetch" />
+				</div>
+				<div class="col-2">
+					<input class="green" type="submit" name="operation" value="-p" />
+				</div>
+				<div class="col-3">
+					<input type="submit" name="operation" value="pull" />
+				</div>
+				<div class="col-4">
+					<input class="green" type="submit" name="operation" value="--rebase" /> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-7">
+					<input type="submit" name="operation" value="checkout" /> 
+				</div>
+				<div class="col-2">
+					<input class="green" type="submit" name="operation" value="-b" /> 
+				</div>
+				<div class="col-3">
+					<input type="submit" name="operation" value="push" />
+				</div>
+			</div>
+		</form>
+		
+		<h4>Tags</h4>
+		<div class="row">
+			<div class="col-12">
+				<form action="%appurl%tag" method="post">
+					<input type="text" name="tag" placeholder="Tag (STABLE, DEV)" />
+				</form>
+			</div>
+		</div>
+		<div class="row">
+		
+			<div class="col-6">
+				<button class="green">Tag Commit</button>
+			</div>
+			<div class="col-6">
+				<a class="button blue" href="%appurl%tags">View Tags</a>
+			</div>
+
+			
+		</div>
+			
+		<a href="%appurl%identity">Configure Identity</a>
 	</div>
 </div>
-
-
-<?php
-
-chdir($this->path);
-// Git
-if($current == 'master')
-	$against = 'origin/master';
-else if($current == 'development')
-	$against = 'master';
-else
-	$against = 'development';
-
-$branchdiff = '<div class="modified_diff_header">Diff '.$against.'..'.$current.'</div>'.shell_exec('/usr/bin/git diff --name-status '.$against.'..'.$current.' 2>&1');
-
-$diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a>
-<div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
-$branchdiff.'</div>';
-
-/* Red/Green diff colors */
-$diff = preg_replace('/(^|\n)(diff \-\-git [^\n]+)/', '$1<span class="modified_diff_header">$2</span>', $diff);
-
-$diff = preg_replace('/(^|\n)(\+[^\n]*)/', '$1<span class="modified_diff_to">$2</span>', $diff);
-
-$diff = preg_replace('/(^|\n)(-[^\n]*)/', '$1<span class="modified_diff_from">$2</span>', $diff);
-
-$diff = preg_replace('/\n<span/', '<span', $diff);
-$diff = preg_replace('/<\/span>\n/', '</span>', $diff);
-
-/*
-// Get current branch, replace tools into output
-$status = shell_exec('/usr/bin/git status');
-$status = preg_replace(
-	'/both modified:\s+([0-9A-Za-z.\/_]+)/', 
-	'$0 <a '.jsprompt('Are you sure?').'href="%appurl%add?file=$1">mark resolved</a>',
-$status);
-//$status = preg_replace('/^modified: [^\n]+/', "$0 checkout", $status);
-
-$status = preg_replace(
-	'/modified:\s+([0-9A-Za-z.\/_]+)/', 
-	'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
-$status);
-
-$status = preg_replace(
-	'/deleted:\s+([0-9A-Za-z.\/_]+)/', 
-	'<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file=$1">undo</a> $0',
-$status);
-
-
-preg_match("/^On branch ([^\n]+)/", $status, $match);
-$current = $match[1];
-$untracked = explode('Untracked files:', $status);
-
-echo '<pre>';
-echo $status;
-echo '</pre>';*/
-
-
-
-// Better Status
-$status = shell_exec('/usr/bin/git status -b --porcelain');
-
-if(preg_match_all('/(^|\n\s?)(A|A?M|UU|\?\?|D)\s+([^\n]+)/', $status, $match))
-{
-	for($i = 0; $i < count($match[0]); $i++)
-	{
-		$full = $match[0][$i];
-		$sol = $match[1][$i]; // start of line
-		$operation = $match[2][$i];
-		$file = $match[3][$i];
-		
-		unset($replace);
-		switch($operation)
-		{
-			case 'AM':
-				$replace = 'AM (<a '.jsprompt('Are you sure?').' href="%appurl%reset?file='.$file.'">Reset</a>) '.$file.' (modified since staged)';
-				break;
-			// lol UUMAD??
-			case 'UU':
-				$replace = 'UU (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>, <a '.jsprompt('Are you sure?').' href="%appurl%add?file='.$file.'">Mark Resolved</a>) '.$file.' CONFLICT!';
-				break;
-			case 'M':
-				$replace = 'M <!-- , <a href="">stage</a> --> (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) '.$file.' (modified)';
-				break;
-			case 'A':
-				$replace = 'A (<a '.jsprompt('Are you sure?').' href="%appurl%reset?file='.$file.'">Reset</a>) '.$file.' (staged to add)';
-				break;
-			case 'D':
-				$replace = 'D (<a '.jsprompt('Are you sure?').'href="%appurl%cohead?file='.$file.'">Undo</a>) Deleted: '.$file;
-				break;
-			case '??':
-				$replace = '?? (<a href="%appurl%add?file='.$file.'">Add</a>) Untracked: '.$file;
-				break;
-		}
-		
-		if(isset($replace))
-			$status = str_replace($full, $sol.$replace, $status);
-	}
-}
-
-$tree = shell_exec('git log --all --graph --pretty=tformat:"%x1b%h%x09%x1b%d%x1b%x20%s%x20%x1b[%an]%x1b" | grep " ("');
-
-echo '<h3>Status</h3>';
-$status = preg_replace('/^##\s([^\r\n]+)/', 'Current Branch: <strong>$1</strong>', $status);
-echo nl2br($status);
-
-echo '<h3>Branch Tree</h3>';
-echo nl2br($tree);
-
-echo '<h3>Diff</h3>';
-echo $diff.'<br />';
-
-?>
-		
-		
 		
 <script type="text/javascript">
 	$(document).ready(function(){
