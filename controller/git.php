@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="<?=$this->lf->relbase;?>lf/apps/git/git.css" />
 <?php
 
 /**
@@ -23,6 +22,8 @@ class git extends app
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
+		
+		$this->lf->head .= '<link rel="stylesheet" href="'.$this->lf->relbase.'lf/apps/git/git.css" />';
 	}
 	
 	public function deleteErrorLogs($args)
