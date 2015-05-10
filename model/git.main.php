@@ -185,6 +185,8 @@ if(strlen($diff) > 50000)
 		.substr($diff, -25000);
 }
 
+$diff = preg_replace('/%([^%]+)%/', '%{$1}%', $diff);
+
 
 
 $status = preg_replace('/^##\s([^\r\n]+)/', 'Current Branch: <strong>$1</strong>', $status);
