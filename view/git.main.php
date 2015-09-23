@@ -13,14 +13,14 @@ if(isset($_SESSION['git_msg']))
 
 <div class="row">
 	<div class="col-8">
-		<h3>Local Branches</h3>
+		<h3 class="no_martop">Local Branches</h3>
 		<form action="%appurl%create" method="post">
 			<div class="row">
 				<div class="col-8">
 					<input type="text" name="newbranch" placeholder="New branch name"/>
 				</div>
 				<div class="col-4">
-					<input type="submit" value="Create" />
+					<input class="blue" type="submit" value="Create" />
 				</div>
 			</div>
 		</form>
@@ -30,12 +30,12 @@ if(isset($_SESSION['git_msg']))
 
 
 
-		<ul class="efvlist">
+		
 			<?php if($current == NULL): ?>
 				<li>
 					<form action="%appurl%commit" method="post">
 						<strong>Not currently on any branch</strong> 
-						<input type="text" name="commit_text" placeholder="Commit text"/> 
+						<input type="text" class="green" name="commit_text" placeholder="Commit text"/> 
 						<input type="submit" value="Commit" />
 						<?=$pull;?> 
 						<span><?=$branch;?><span>
@@ -72,41 +72,51 @@ if(isset($_SESSION['git_msg']))
 					if($parts[2] == $current) 
 					{
 						?>
-						<li class="active">
-							<form action="%appurl%commit" method="post">
-								<div class="row">
-									<div class="col-2"><strong class="label dark_b"><?=$parts[2];?></strong></div>
-									<div class="col-5"><input type="text" name="commit_text" placeholder="Commit text"/></div>
-									<div class="col-2"><input type="submit" value="Commit" /></div>
-									<div class="col-3"><a class="label" href="%appurl%history">view history (<?=$branch;?>)</a></div>
-								</div>
-							</form>
 						
-							<form action="%appurl%gitop/<?=$parts[2];?>" method="post">
-								<div class="row">
-									<div class="col-2"><span>Merge Ops:</span></div>
-									<div class="col-4">	
-										<select name="branch" id="">
-											<option value="">-- Select Branch --</option>
-											<?=$branch_options;?>
-										</select>
+						<!-- <li class="active"> -->
+						<div class="tile marbot">
+							<div class="tile-header light_gray">
+								<h4 class="">
+									<?=$parts[2];?> (<a href="%appurl%history"><?=$branch;?></a>)
+								</h4>
+							</div>
+							<div class="tile-content">
+								<form action="%appurl%commit" method="post">
+									<div class="row">
+										<div class="col-10"><input type="text" name="commit_text" placeholder="Commit text"/></div>
+										<div class="col-2"><input type="submit" class="green" value="Commit" /></div>
 									</div>
-									<div class="col-2"><input type="submit" name="operation" value="Merge" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="Rebase" /></div>
-									<div class="col-2"><input type="submit" class="green" name="operation" value="--continue" /></div>
-								</div>
-							</form>
+								</form>
 							
-							<form action="%appurl%gitop" method="post">
-								<div class="row">
-									<div class="col-2"><span>Stash Ops:</span></div>
-									<div class="col-2"><input type="submit" name="operation" value="Stash" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="List" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="Branch" /></div>
-									<div class="col-2"><input type="submit" name="operation" value="Apply" /></div>
-									<div class="col-2"><input class="green" type="submit" name="operation" value="--index" /></div>
-								</div>
-							</form>
+								<form action="%appurl%gitop/<?=$parts[2];?>" method="post">
+									<div class="row">
+										<div class="col-2"><span>Merge Ops:</span></div>
+										<div class="col-4">	
+											<select name="branch" id="">
+												<option value="">-- Select Branch --</option>
+												<?=$branch_options;?>
+											</select>
+										</div>
+										<div class="col-2"><input class="blue" type="submit" name="operation" value="Merge" /></div>
+										<div class="col-2"><input class="dark_blue" type="submit" name="operation" value="Rebase" /></div>
+										<div class="col-2"><input class="dark_blue" type="submit" class="green" name="operation" value="--continue" /></div>
+									</div>
+								</form>
+								
+								<form action="%appurl%gitop" method="post">
+									<div class="row">
+										<div class="col-2"><span>Stash Ops:</span></div>
+										<div class="col-2"><input type="submit" name="operation" value="Stash" /></div>
+										<div class="col-2"><input type="submit" name="operation" value="List" /></div>
+										<div class="col-2"><input type="submit" name="operation" value="Branch" /></div>
+										<div class="col-2"><input class="dark_gray" type="submit" name="operation" value="Apply" /></div>
+										<div class="col-2"><input class="dark_gray" type="submit" name="operation" value="--index" /></div>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+						
 						</li>
 						<?php
 					}
@@ -118,13 +128,21 @@ if(isset($_SESSION['git_msg']))
 						
 						?>
 						
-						 <li>
-							<a href="%appurl%checkout/<?=$parts[2];?>"><?=$parts[2];?></a> 
-							<?=$delete.$pull;?>
-							<span style="float: right">
-							<?=$branch;?>
-							</span>
-						</li>
+						 <div class="tile marbot">
+							<div class="tile-content">
+								<div class="row">
+									<div class="col-12">
+										<a href="%appurl%checkout/<?=$parts[2];?>"><?=$parts[2];?></a> 
+										
+										<?=$delete.$pull;?>
+										
+										<span style="float: right">
+											<?=$branch;?>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
 						<?php
 						//echo '<li><a href="%appurl%checkout/'.$parts[2].'">'.$parts[2].'</a> '.$delete.$pull.'<span style="float: right">'.$branch.'</span>';
 						
@@ -143,7 +161,7 @@ if(isset($_SESSION['git_msg']))
 	</div>
 	<div class="col-4">
 		
-		<h3>Repository</h3>
+		<h3 class="no_martop">Repository</h3>
 		
 		<form action="%appurl%" method="post">
 			<div class="row">
@@ -162,10 +180,10 @@ if(isset($_SESSION['git_msg']))
 			</div>
 			<div class="row">
 				<div class="col-6">
-					<button class="green" type="submit">Change Repo</button>
+					<button class="blue" type="submit">Change Repo</button>
 				</div>
 				<div class="col-6">
-					<a class="button blue" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
+					<a class="button" title="Click to manage your repositories" href="%appurl%repo">View Repos</a>
 				</div>
 			</div>
 		</form>
@@ -186,7 +204,7 @@ if(isset($_SESSION['git_msg']))
 					</select>
 				</div>
 				<div class="col-6">
-					<a class="blue button" href="%appurl%remotes">View Remotes</a>
+					<a class="button" href="%appurl%remotes">View Remotes</a>
 				</div>
 			</div>
 			<div class="row">
@@ -196,16 +214,16 @@ if(isset($_SESSION['git_msg']))
 			</div>
 			<div class="row">
 				<div class="col-3">
-					<input type="submit" name="operation" value="fetch" />
+					<input class="dark_gray"  type="submit" name="operation" value="fetch" />
 				</div>
 				<div class="col-2">
-					<input class="green" type="submit" name="operation" value="-p" />
+					<input class="dark_gray"  type="submit" name="operation" value="-p" />
 				</div>
 				<div class="col-3">
-					<input type="submit" name="operation" value="pull" />
+					<input class="blue" type="submit" name="operation" value="pull" />
 				</div>
 				<div class="col-4">
-					<input class="green" type="submit" name="operation" value="--rebase" /> 
+					<input class="blue" type="submit" name="operation" value="--rebase" /> 
 				</div>
 			</div>
 			<div class="row">
@@ -213,10 +231,10 @@ if(isset($_SESSION['git_msg']))
 					<input type="submit" name="operation" value="checkout" /> 
 				</div>
 				<div class="col-2">
-					<input class="green" type="submit" name="operation" value="-b" /> 
+					<input type="submit" name="operation" value="-b" /> 
 				</div>
 				<div class="col-3">
-					<input type="submit" name="operation" value="push" />
+					<input class="green" type="submit" name="operation" value="push" />
 				</div>
 			</div>
 		</form>
@@ -235,7 +253,7 @@ if(isset($_SESSION['git_msg']))
 				<button class="green">Tag Commit</button>
 			</div>
 			<div class="col-6">
-				<a class="button blue" href="%appurl%tags">View Tags</a>
+				<a class="button" href="%appurl%tags">View Tags</a>
 			</div>
 
 			
