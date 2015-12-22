@@ -159,7 +159,7 @@ else
 $branchdiff = '<div class="modified_diff_header">Diff '.$against.'..'.$current.'</div>'.shell_exec('/usr/bin/git diff --name-status '.$against.'..'.$current.' 2>&1');
 
 $diff = '<a href="#" class="modified_showdiff">Show/Hide Diff</a>
-<div class="modified_diff">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
+<div class="modified_diff martop">'.htmlentities(substr(shell_exec('/usr/bin/git diff 2>&1'), 0, -1)).
 $branchdiff.'</div>';
 
 /* Red/Green diff colors */
