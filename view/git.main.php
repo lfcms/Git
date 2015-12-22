@@ -166,8 +166,22 @@ if(isset($_SESSION['git_msg']))
 			</div>
 		</div>
 		
-		<h4>Git Diff</h4>
-		<?=$diff;?>
+		<div class="row">
+		<div class="col-12">
+			<div class="tile white">
+				<div class="tile-header">
+					<h4>Git Diff</h4>
+				</div>
+				<div class="tile-content">
+					<div class="row">
+						<div class="col-12">
+							<?=$diff;?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
 		
 	</div>
 	<div class="col-4">
