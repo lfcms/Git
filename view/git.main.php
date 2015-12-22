@@ -74,8 +74,8 @@ if(isset($_SESSION['git_msg']))
 						<div class="tile-header">
 							<div class="row">
 								<div class="col-12">
-									<i class="fa fa-check green_fg" title="Current Branch"></i>
-									<span class=""><?=$parts[2];?></span>
+									<i class="fa fa-check green_fg"></i>
+									<span class="" title="Current Branch"><?=$parts[2];?></span>
 									<span class="pull-right">
 										<a href="%appurl%history" title="Commit History"><i class="fa fa-history"></i></a>
 										<?=$branch;?>
@@ -136,7 +136,7 @@ if(isset($_SESSION['git_msg']))
 							<div class="row">
 								<div class="col-12">
 									<i class="fa fa-check"></i>
-									<a href="%appurl%checkout/<?=$parts[2];?>"><?=$parts[2];?></a>
+									<a href="%appurl%checkout/<?=$parts[2];?>" title="Switch to '<?=$parts[2];?>' Branch"><?=$parts[2];?></a>
 									<span style="float: right">
 										<?=$delete.$pull;?>
 										<?=$branch;?>
