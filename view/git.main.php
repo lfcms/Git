@@ -11,7 +11,7 @@ if(isset($_SESSION['git_msg']))
 
 ?>
 
-<div class="row">
+<div class="row square-all">
 	<div class="col-8">
 		<h3 class="no_martop">Local Branches</h3>
 		<form action="%appurl%create" method="post">

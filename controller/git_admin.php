@@ -10,37 +10,47 @@
  * 
  * 
  */
-class git extends app 
+class git_admin
 {
 	private $path;
 	
-	protected function init($vars)
+	public function init()
 	{
-		if(isset($_POST['newgitpath'])) $_SESSION['git_path'] = $_POST['newgitpath'];
-		else if(!isset($_SESSION['git_path'])) $_SESSION['git_path'] = ROOT.'..';
+		$vars = \lf\www('Param');
+		
+		if(isset($_POST['newgitpath'])) 
+			$_SESSION['git_path'] = $_POST['newgitpath'];
+		
+		else if(!isset($_SESSION['git_path'])) 
+			$_SESSION['git_path'] = ROOT.'..';
 		
 		$this->path = $_SESSION['git_path'];
 		
 		chdir($this->path);
 		
-		$this->lf->head .= '<link rel="stylesheet" href="'.$this->lf->relbase.'lf/apps/git/git.css" />';
+		//(new \lf\cms)->headAppend('<link rel="stylesheet" href="'.\lf\www('LF').'apps/git/git.css" />');
+		(new \lf\cms)->loadStylesheet( \lf\www('LF').'apps/git/git.css' );
 	}
 	
-	public function deleteErrorLogs($args)
+	public function main()
 	{
+		$vars = \lf\www('Param');
+		
+		include ROOT.'apps/git/model/git.main.php';
+		include ROOT.'apps/git/view/git.main.php';
+	}
+	
+	public function deleteErrorLogs()
+	{
+		$args = \lf\www('Param');
 		chdir(LF);
 		$_SESSION['git_msg'] = shell_exec('find -name error_log -delete 2>&1');
 		redirect302();
 	}
 	
-	public function main($vars)
+	public function gitop()
 	{
-		include ROOT.'apps/git/model/git.main.php';
-		include ROOT.'apps/git/view/git.main.php';
-	}
-	
-	public function gitop($vars)
-	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = '';
 		
 		if(!preg_match(
@@ -128,8 +138,9 @@ class git extends app
 		$this->main($vars);
 	}*/
 	
-	public function history($args)
+	public function history()
 	{
+		$args = \lf\www('Param');
 		if(isset($args[1]))
 		{
 			
@@ -161,14 +172,16 @@ class git extends app
 		echo '</span>';
 	}
 	
-	public function repo($args)
+	public function repo()
 	{
+		$args = \lf\www('Param');
 		chdir(ROOT.'apps/git');
 		include 'view/git.repo.php';
 	}
 	
-	public function gitclone($args)
+	public function gitclone()
 	{
+		$args = \lf\www('Param');
 		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
 		
 		$type = array('apps', 'skins', 'plugins');
@@ -194,8 +207,9 @@ class git extends app
 		$this->main($vars);*/
 	}
 	 
-	public function addremotes($args)
+	public function addremotes()
 	{
+		$args = \lf\www('Param');
 		//git clone ssh://bios@localhost/home/bios/www/littlefoot/lf/skins/fresh
 		
 		//$type = array('apps', 'skins');
@@ -214,16 +228,18 @@ class git extends app
 		$this->main($vars);*/
 	}
 	
-	public function add($args)
+	public function add()
 	{
+		$args = \lf\www('Param');
 		chdir($this->path);
 		shell_exec('/usr/bin/git add '.escapeshellcmd($_GET['file']).' 2>&1');
 		$_SESSION['git_msg'] = $_GET['file'].' added to git';
 		redirect302();
 	}
 	
-	public function tag($vars)
+	public function tag()
 	{
+		$args = \lf\www('Param');
 		$rev = shell_exec('git rev-list HEAD | wc -l');
 		$rev = trim($rev);
 		$version = 'v1.'.date('y.m').'-r'.$rev.'-'.$_POST['tag'];
@@ -243,14 +259,16 @@ class git extends app
 		redirect302();
 	}
 	
-	public function tags($vars)
+	public function tags()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = 'Tags: <br />'.nl2br(trim(shell_exec('/usr/bin/git tag 2>&1')));
 		redirect302();
 	}
 	
-	public function remotes($vars)
+	public function remotes()
 	{
+		$vars = \lf\www('Param');
 		if(isset($vars[1]) && $vars[1] == 'master') return 'nope';
 		
 		/*$ini = preg_replace('/\s"([^"]+)"/', '$1', file_get_contents($this->path.'/.git/config'));
@@ -300,8 +318,9 @@ class git extends app
 		$this->main($vars);*/
 	}
 	
-	public function rmremote($args)
+	public function rmremote()
 	{
+		$args = \lf\www('Param');
 		print_r($_POST);
 		
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git remote rm '.escapeshellcmd($_POST['remote']).' 2>&1')), 0, -1);
@@ -309,15 +328,17 @@ class git extends app
 		//redirect302();
 	}
 	
-	public function rm($vars)
+	public function rm()
 	{
+		$vars = \lf\www('Param');
 		if($vars[1] == 'master') return 'nope';
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git branch -D '.$vars[1].' 2>&1')), 0, -1);
 		redirect302();
 	}
 	
-	public function rmfile($vars)
+	public function rmfile()
 	{
+		$vars = \lf\www('Param');
 		if($vars[1] == 'master') return 'nope';
 		
 		
@@ -337,14 +358,16 @@ class git extends app
 		$this->main($vars);
 	}*/
 	
-	public function merge($vars)
+	public function merge()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout master 2>&1 && /usr/bin/git merge '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		redirect302();
 	}
 	
-	public function rebase($vars)
+	public function rebase()
 	{
+		$vars = \lf\www('Param');
 		$rebase = "master ";
 		if(isset($_SESSION['rebase'])) $rebase = '--continue ';
 		
@@ -371,33 +394,38 @@ class git extends app
 		$this->main($vars);
 	}
 	
-	public function create($vars)
+	public function create()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout -b "'.$_POST['newbranch'].'" 2>&1')), 0, -1);
 		redirect302();
 	}
 	
-	public function reset($vars)
+	public function reset()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git reset HEAD -- '.escapeshellarg($_GET['file']).' 2>&1')), 0, -1);
 		
 		redirect302();
 	}
 	
-	public function cohead($vars)
+	public function cohead()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout HEAD -- "'.$_GET['file'].'" 2>&1')), 0, -1);
 		redirect302();
 	}
 	 
-	public function checkout($vars)
+	public function checkout()
 	{
+		$vars = \lf\www('Param');
 		$_SESSION['git_msg'] = substr(nl2br(shell_exec('/usr/bin/git checkout '.escapeshellarg($vars[1]).' 2>&1')), 0, -1);
 		redirect302(); 
 	}
 	
-	public function commit($vars)
+	public function commit()
 	{
+		$vars = \lf\www('Param');
 		$out = shell_exec('/usr/bin/git commit -am "'.escapeshellarg($_POST['commit_text']).'" 2>&1');
 		$out = substr($out, 0, -1);
 		
@@ -472,8 +500,9 @@ Commits:
 		redirect302();
 	}*/
 	
-	public function identity($args)
+	public function identity()
 	{
+		$args = \lf\www('Param');
 		$user = shell_exec('/usr/bin/git config --local user.email "joe@bioshazard.com"');
 		include ROOT.'apps/git/view/git.identity.php';
 	}
