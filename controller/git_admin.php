@@ -509,7 +509,8 @@ Commits:
 	
 	public function quickstatus()
 	{
-		if(preg_match('/(apps|skins|plugins)\/([^\/]+)/', $_SESSION['git_path'], $match))
+		if(isset($_SESSION['git_path']) 
+			&& preg_match('/(apps|skins|plugins)\/([^\/]+)/', $_SESSION['git_path'], $match))
 			$repo = $match[1].'/'.$match[2];
 		else 
 			$repo = 'Littlefoot';
